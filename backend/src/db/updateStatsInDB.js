@@ -1,5 +1,6 @@
 import { setMeta } from './setMeta.js';
 /**
+ * Update stats and save the result in meta
  * @param {InstanceType<import('better-sqlite3')>} db
  */
 export function updateStatsInDB(db) {
@@ -70,7 +71,7 @@ function getPerYears(db) {
     perYears.length > 0 ? perYears[0].year : currentYear,
   );
   for (let year = firstYear; year <= now.getFullYear(); year++) {
-    if (!perYears.find((entry) => entry.year === year)) {
+    if (!perYears.some((entry) => entry.year === year)) {
       perYears.push({
         count: 0,
         toProcess: 0,
@@ -111,7 +112,7 @@ function getPerMonths(db) {
       year--;
     }
     // use rather find
-    if (!perMonths.find((entry) => entry.month === month)) {
+    if (!perMonths.some((entry) => entry.month === month)) {
       perMonths.push({
         count: 0,
         toProcess: 0,
@@ -125,27 +126,6 @@ function getPerMonths(db) {
   }
   perMonths.sort((a, b) => a.firstDayOfMonthEpoch - b.firstDayOfMonthEpoch);
   return perMonths;
-}
-
-function getOneArrayStat(db, query) {
-  const twelveMonthsAgo = new Date();
-  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-  const twelveMonthsAgoTimestamp = twelveMonthsAgo.getTime();
-
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-  const oneMonthAgoTimestamp = oneMonthAgo.getTime();
-  const stmt = db.prepare(
-    `SELECT COUNT(_nmrID) as count, lastModified, ${query} as value FROM nmrs GROUP BY ${query} ORDER BY lastModified DESC`,
-  );
-  const stmtPeriod = db.prepare(
-    `SELECT COUNT(_nmrID) as count, lastModified, ${query} as value FROM nmrs WHERE lastModified >= ? GROUP BY ${query} ORDER BY lastModified DESC`,
-  );
-  return {
-    lastMonth: stmtPeriod.all(oneMonthAgoTimestamp),
-    last12Months: stmtPeriod.all(twelveMonthsAgoTimestamp),
-    total: stmt.all(),
-  };
 }
 
 function getOneStat(db, table, uniqueField, query) {

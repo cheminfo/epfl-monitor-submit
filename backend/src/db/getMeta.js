@@ -1,8 +1,8 @@
 /**
- *
+ * get a record from the metas table
  * @param {InstanceType<import('better-sqlite3')>} db
  * @param {string} key
- * @returns
+ * @returns {string|number|boolean|object|undefined}
  */
 export function getMeta(db, key) {
   const stmt = db.prepare('SELECT value FROM metas WHERE key=@key');

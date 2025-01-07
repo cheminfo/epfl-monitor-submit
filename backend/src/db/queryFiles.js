@@ -4,10 +4,12 @@ import { search } from 'smart-sqlite3-filter';
 const debug = debugLibrary('queryFiles');
 
 /**
- * @param {string} queryString
- * @param {InstanceType<import('better-sqlite3')>} db
- * @param {object} [options={}]
- * @param {import('cheminfo-types').Logger} [options.logger]
+ * search for files based on a 'smart' query
+ * @param {string} queryString - search query string like 'name:abc'
+ * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
+ * @param {object} [options={}] - object containing the options
+ * @param {import('cheminfo-types').Logger} [options.logger] - optional logger that can return valuable debug information
+ * @returns {Promise}
  */
 
 export async function queryFiles(queryString, db, options = {}) {

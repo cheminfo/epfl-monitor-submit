@@ -1,14 +1,16 @@
-/* eslint-disable no-await-in-loop */
+ 
 import Debug from 'debug';
 import delay from 'delay';
-import { syncPath } from './syncPath.js';
+
 import { getDB } from '../db/getDB.js';
+
+import { syncPath } from './syncPath.js';
 
 const debug = Debug('sync');
 
 const dataPath =
   process.env.DATA_PATH ||
-  new URL('./__tests__/data', import.meta.url).pathname;
+  new URL('__tests__/data', import.meta.url).pathname;
 
 export async function cronSync() {
   const db = await getDB();

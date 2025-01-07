@@ -1,8 +1,11 @@
-import debugLibrary from 'debug';
-import { join } from 'node:path';
-import { stat, readdir } from 'node:fs/promises';
+/* eslint-disable no-await-in-loop */
 import { openAsBlob } from 'node:fs';
+import { stat, readdir } from 'node:fs/promises';
+import { join } from 'node:path';
+
+import debugLibrary from 'debug';
 import md5Library from 'md5';
+
 const debug = debugLibrary('syncPath');
 
 /**

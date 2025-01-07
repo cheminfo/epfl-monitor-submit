@@ -1,7 +1,7 @@
 import debugLibrary from 'debug';
 
-import { queryFiles } from '../../db/queryFiles.js';
 import { getDB } from '../../db/getDB.js';
+import { queryFiles } from '../../db/queryFiles.js';
 
 const debug = debugLibrary('search');
 

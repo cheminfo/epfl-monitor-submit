@@ -39,7 +39,7 @@ export async function prepareDB(db) {
     migrationPattern: join(__dirname, 'migrations/*'),
     driver: 'sqlite3',
     execQuery: (query) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         const stmt = db.prepare(query);
         try {
           const rows = stmt.all();
@@ -54,7 +54,7 @@ export async function prepareDB(db) {
       });
     },
     execSqlScript: (sqlScript) => {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         db.exec(sqlScript);
         resolve();
       });

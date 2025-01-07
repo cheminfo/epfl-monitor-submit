@@ -1,6 +1,7 @@
 import { test, expect } from 'vitest';
-import { getTempDB } from '../getDB.js';
+
 import { syncPath } from '../../cron/syncPath.js';
+import { getTempDB } from '../getDB.js';
 import { queryFiles } from '../queryFiles.js';
 
 test('queryFiles', async () => {

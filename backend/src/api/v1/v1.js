@@ -1,5 +1,5 @@
-import stats from './stats.js';
 import search from './search.js';
+import stats from './stats.js';
 
 /**
  *
