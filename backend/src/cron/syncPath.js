@@ -1,0 +1,61 @@
+import debugLibrary from 'debug';
+import { join } from 'node:path';
+import { stat, readdir } from 'node:fs/promises';
+import { openAsBlob } from 'node:fs';
+import md5Library from 'md5';
+const debug = debugLibrary('syncPath');
+
+/**
+ *
+ * @param {InstanceType<import('better-sqlite3')>} db
+ * @param {string} path
+ */
+export async function syncPath(db, path) {
+  const instruments = (await readdir(path, { withFileTypes: true }))
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+
+  const pathInDBStmt = db.prepare('SELECT * from files WHERE relativePath = ?');
+
+  for (const status of ['processed', 'errored', 'to_process']) {
+    for (const instrument of instruments) {
+      const files = (
+        await readdir(join(path, instrument, status), {
+          recursive: true,
+          withFileTypes: true,
+        })
+      )
+        .filter((dirent) => dirent.isFile())
+        .map((dirent) => dirent.name);
+      for (const filename of files) {
+        const relativePath = join(instrument, status, filename);
+        // check if relativePath exists
+        const existing = pathInDBStmt.all(relativePath);
+        // if existing we just skip
+        if (existing.length > 0) {
+          continue;
+        }
+        // if not existing we insert
+        const filePath = join(path, relativePath);
+        const fileStat = await stat(filePath);
+        const blob = await openAsBlob(filePath);
+        const md5 = md5Library(new Uint8Array(await blob.arrayBuffer()));
+
+        // we don't really check if it exists or not, we just insert or update
+        db.prepare(
+          'INSERT OR REPLACE INTO files (relativePath, md5, size, lastModified, name, status, instrument) VALUES (?, ?, ?, ?, ?,?, ?)',
+        ).run(
+          relativePath,
+          md5,
+          fileStat.size,
+          Math.round(fileStat.mtimeMs),
+          filename,
+          status,
+          instrument,
+        );
+      }
+    }
+  }
+
+  debug('syncPath');
+}

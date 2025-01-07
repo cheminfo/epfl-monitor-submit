@@ -1,0 +1,28 @@
+{
+  "name": "epfl-monitor-submit-backend",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "DEBUG=* node --watch src/api/server.js",
+    "devSync": "DEBUG=* node --watch src/cron/sync.js",
+    "test-only": "vitest --run"
+  },
+  "dependencies": {
+    "@fastify/cors": "^10.0.2",
+    "@fastify/sensible": "^6.0.2",
+    "@fastify/swagger": "^9.4.0",
+    "@fastify/swagger-ui": "^5.2.0",
+    "better-sqlite3": "^11.7.2",
+    "cheminfo-types": "^1.8.1",
+    "debug": "^4.4.0",
+    "delay": "^6.0.0",
+    "fastify": "^5.2.1",
+    "md5": "^2.3.0",
+    "pino-pretty": "^13.0.0",
+    "postgrator": "^8.0.0",
+    "smart-sqlite3-filter": "^0.4.0"
+  },
+  "devDependencies": {
+    "fifo-logger": "^1.0.0"
+  }
+}
