@@ -23,14 +23,13 @@ export default function stats(fastify) {
 }
 
 /**
- *
- * @param {import('fastify').FastifyRequest} request
- * @param {import('fastify').FastifyReply} response
+ * Internal function to retrieve the stats
+ * @param {import('fastify').FastifyRequest} request - fastify request
+ * @param {import('fastify').FastifyReply} response - fastify response
  * @param {*} response
  * @returns
  */
 async function process(request, response) {
-  const params = request.body || request.query || {};
   const db = await getDB();
   try {
     const result = await getStatsFromDB(db);

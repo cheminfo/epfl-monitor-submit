@@ -14,7 +14,8 @@ const debug = debugLibrary('syncPath');
  * @param {string} path
  */
 export async function syncPath(db, path) {
-  const instruments = (await readdir(path, { withFileTypes: true }))
+  const allInstruments = await readdir(path, { withFileTypes: true });
+  const instruments = allInstruments
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
 
@@ -22,12 +23,11 @@ export async function syncPath(db, path) {
 
   for (const status of ['processed', 'errored', 'to_process']) {
     for (const instrument of instruments) {
-      const files = (
-        await readdir(join(path, instrument, status), {
-          recursive: true,
-          withFileTypes: true,
-        })
-      )
+      const allFiles = await readdir(join(path, instrument, status), {
+        recursive: true,
+        withFileTypes: true,
+      });
+      const files = allFiles
         .filter((dirent) => dirent.isFile())
         .map((dirent) => dirent.name);
       for (const filename of files) {

@@ -6,8 +6,8 @@ import { queryFiles } from '../../db/queryFiles.js';
 const debug = debugLibrary('search');
 
 /**
- *
- * @param {import('fastify').FastifyInstance} fastify
+ * Search files based on a query string
+ * @param {import('fastify').FastifyInstance} fastify - fastify instance
  */
 export default function search(fastify) {
   fastify.route({
@@ -31,11 +31,10 @@ export default function search(fastify) {
 }
 
 /**
- *
- * @param {import('fastify').FastifyRequest} request
- * @param {import('fastify').FastifyReply} response
- * @param {*} response
- * @returns
+ * Internal function to process the query
+ * @param {import('fastify').FastifyRequest} request - fastify request
+ * @param {import('fastify').FastifyReply} response - fastify response
+ * @returns {Promise}
  */
 async function process(request, response) {
   const params = request.body || request.query || {};

@@ -108,11 +108,11 @@ function getPerMonths(db) {
   let year = now.getFullYear();
   for (let i = 0; i < 12; i++) {
     month = (month + 11) % 12;
+    const currentMonth = month;
     if (month === 11) {
       year--;
     }
-    // use rather find
-    if (!perMonths.some((entry) => entry.month === month)) {
+    if (!perMonths.some((entry) => entry.month === currentMonth)) {
       perMonths.push({
         count: 0,
         toProcess: 0,

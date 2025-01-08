@@ -10,8 +10,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 let db;
 
 /**
- *
- * @returns {Promise<InstanceType<import('better-sqlite3')>>}
+ * Returns a promise that resolves as an instance of the database
+ * @returns {Promise<InstanceType<import('better-sqlite3')>>} - promise that resolves as an instance of the database
  */
 export async function getDB() {
   if (!db?.open) {
@@ -28,12 +28,20 @@ export async function getDB() {
   return db;
 }
 
+/**
+ * Returns a Promise that resolves to a temporary instance of the database
+ * @returns {Promise<InstanceType<import('better-sqlite3')>>} - promise that resolves as an instance of the temporary database
+ */
 export async function getTempDB() {
   const tempDB = sqLite(':memory:');
   await prepareDB(tempDB);
   return tempDB;
 }
 
+/**
+ * Internal function that ensures that the schema of the database is up to date
+ * @param {InstanceType<import('better-sqlite3')} db - the instance of sqlite3 database
+ */
 export async function prepareDB(db) {
   const postgrator = new Postgrator({
     migrationPattern: join(__dirname, 'migrations/*'),
