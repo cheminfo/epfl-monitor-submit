@@ -10,5 +10,8 @@ export default [
       },
     },
     rules: {},
+    settings: {
+      'import/core-modules': ['vitest'], // in monorepo we may have to specify the vitest is installed at the root
+    },
   },
 ];

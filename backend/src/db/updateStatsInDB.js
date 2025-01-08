@@ -1,7 +1,8 @@
 import { setMeta } from './setMeta.js';
 /**
  * Update stats and save the result in meta
- * @param {InstanceType<import('better-sqlite3')>} db
+ * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
+ * @returns {object} - object containing the stats
  */
 export function updateStatsInDB(db) {
   const stats = {

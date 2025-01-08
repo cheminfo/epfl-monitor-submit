@@ -11,7 +11,19 @@ test('syncPath', async () => {
   await syncPath(db, path);
 
   const allEntries = db.prepare('SELECT * FROM files').all();
-  console.log(allEntries);
-
-  //  expect(db.prepare('SELECT * FROM path').all()).toMatchSnapshot();
+  const paths = allEntries.map((entry) => entry.relativePath);
+  expect(paths).toStrictEqual([
+    'ir3404/processed/a.proc.jdx',
+    'ir3404/processed/b.proc.jdx',
+    'ms1520/processed/c.proc.jdx',
+    'ms1520/processed/d.proc.jdx',
+    'ir3404/errored/a.err.jdx',
+    'ir3404/errored/b.err.jdx',
+    'ms1520/errored/c.err.jdx',
+    'ir3404/to_process/a.to.jdx',
+    'ir3404/to_process/b.to.jdx',
+    'ms1520/to_process/c.to.jdx',
+    'ms1520/to_process/d.err.jdx',
+    'ms1520/to_process/d.to.jdx',
+  ]);
 });

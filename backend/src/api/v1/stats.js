@@ -6,8 +6,8 @@ import { getStatsFromDB } from '../../db/getStatsFromDB.js';
 const debug = debugLibrary('stats');
 
 /**
- *
- * @param {import('fastify').FastifyInstance} fastify
+ * Get the overall stats of the database
+ * @param {import('fastify').FastifyInstance} fastify - fastify instance
  */
 export default function stats(fastify) {
   fastify.route({
@@ -26,8 +26,7 @@ export default function stats(fastify) {
  * Internal function to retrieve the stats
  * @param {import('fastify').FastifyRequest} request - fastify request
  * @param {import('fastify').FastifyReply} response - fastify response
- * @param {*} response
- * @returns
+ * @returns {Promise<import('fastify').FastifyReply>} - promise of fastify response
  */
 async function process(request, response) {
   const db = await getDB();

@@ -10,6 +10,9 @@ const debug = debugLibrary('sync');
 const dataPath =
   process.env.DATA_PATH || new URL('__tests__/data', import.meta.url).pathname;
 
+/**
+ * Sync the data path with the database inside an infinite loop
+ */
 export async function cronSync() {
   const db = await getDB();
   await syncPath(db, dataPath).catch((error) => debug(error));

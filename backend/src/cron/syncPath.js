@@ -9,9 +9,9 @@ import md5Library from 'md5';
 const debug = debugLibrary('syncPath');
 
 /**
- *
- * @param {InstanceType<import('better-sqlite3')>} db
- * @param {string} path
+ * Ensure that the db contains all the files in the path
+ * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
+ * @param {string} path - the full path to sync
  */
 export async function syncPath(db, path) {
   const allInstruments = await readdir(path, { withFileTypes: true });

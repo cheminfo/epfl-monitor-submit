@@ -3,7 +3,6 @@
  * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
  * @param {string} key - key to store
  * @param {unknown} value - value to store
- * @returns
  */
 export function setMeta(db, key, value) {
   const stmt = db.prepare(

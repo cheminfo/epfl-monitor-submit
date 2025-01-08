@@ -2,7 +2,7 @@ import fastifyCors from '@fastify/cors';
 import fastifySensible from '@fastify/sensible';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
-import Fastify from 'fastify';
+import getFastify from 'fastify';
 
 import setupV1 from './v1/v1.js';
 
@@ -40,7 +40,7 @@ fastify.listen(
 );
 
 async function createFastify(options) {
-  const fastify = Fastify(options);
+  const fastify = getFastify(options);
 
   fastify.register(fastifyCors, {
     maxAge: 86400,

@@ -34,7 +34,7 @@ export default function search(fastify) {
  * Internal function to process the query
  * @param {import('fastify').FastifyRequest} request - fastify request
  * @param {import('fastify').FastifyReply} response - fastify response
- * @returns {Promise}
+ * @returns {Promise<import('fastify').FastifyReply>} - promise of fastify response
  */
 async function process(request, response) {
   const params = request.body || request.query || {};

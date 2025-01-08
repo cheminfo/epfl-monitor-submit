@@ -40,7 +40,7 @@ export async function getTempDB() {
 
 /**
  * Internal function that ensures that the schema of the database is up to date
- * @param {InstanceType<import('better-sqlite3')} db - the instance of sqlite3 database
+ * @param {InstanceType<import('better-sqlite3')>} db - the instance of sqlite3 database
  */
 export async function prepareDB(db) {
   const postgrator = new Postgrator({

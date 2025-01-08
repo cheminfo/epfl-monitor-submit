@@ -9,7 +9,7 @@ const debug = debugLibrary('queryFiles');
  * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
  * @param {object} [options={}] - object containing the options
  * @param {import('cheminfo-types').Logger} [options.logger] - optional logger that can return valuable debug information
- * @returns {Promise}
+ * @returns {Promise} - promise resolving to an array of files
  */
 
 export async function queryFiles(queryString, db, options = {}) {
