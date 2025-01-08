@@ -6,7 +6,7 @@ import { syncPath } from '../syncPath.js';
 test('syncPath', async () => {
   const db = await getTempDB();
 
-  const path = new URL('data', import.meta.url).pathname;
+  const path = new URL('../../../../data', import.meta.url).pathname;
 
   await syncPath(db, path);
 

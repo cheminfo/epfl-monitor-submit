@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "DEBUG=* node --watch src/api/server.js",
-    "devSync": "DEBUG=* node --watch src/cron/sync.js",
+    "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js",
     "test-only": "vitest --run"
   },
   "dependencies": {

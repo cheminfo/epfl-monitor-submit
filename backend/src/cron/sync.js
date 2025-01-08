@@ -2,13 +2,14 @@ import debugLibrary from 'debug';
 import delay from 'delay';
 
 import { getDB } from '../db/getDB.js';
+import { updateStatsInDB } from '../db/updateStatsInDB.js';
 
 import { syncPath } from './syncPath.js';
 
 const debug = debugLibrary('sync');
 
 const dataPath =
-  process.env.DATA_PATH || new URL('__tests__/data', import.meta.url).pathname;
+  process.env.DATA_PATH || new URL('/data', import.meta.url).pathname;
 
 /**
  * Sync the data path with the database inside an infinite loop
@@ -16,6 +17,7 @@ const dataPath =
 export async function cronSync() {
   const db = await getDB();
   await syncPath(db, dataPath).catch((error) => debug(error));
+  updateStatsInDB(db);
   debug('Waiting 1h');
   await delay(60 * 60 * 1000);
 }
