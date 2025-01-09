@@ -6,6 +6,7 @@ import {
 import { useSignals } from '@preact/signals-react/runtime';
 import { state } from './getState.jsx';
 import { Section } from '@blueprintjs/core';
+import { getColorFromStatus } from './files/getColorFromStatus.js';
 
 export function InstrumentTable() {
   const statsSignal = state.data.stats;
@@ -16,7 +17,6 @@ export function InstrumentTable() {
     columnHelper.accessor('name', {
       header: 'Name',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue }) => (
         <a
           onClick={() => {
@@ -26,38 +26,22 @@ export function InstrumentTable() {
           {getValue()}
         </a>
       ),
-      meta: { color: 'yellow', width: 400 },
     }),
     columnHelper.accessor('processed.lastMonth', {
       header: 'Processed Last Month',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'processed'),
-      meta: {
-        color: 'lightblue',
-        width: 200,
-      },
     }),
     columnHelper.accessor('to_process.lastMonth', {
       header: 'To process',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue, row }) =>
         getClickableCell(getValue, row, 'to_process'),
-      meta: {
-        color: 'lightblue',
-        width: 200,
-      },
     }),
     columnHelper.accessor('errored.lastMonth', {
       header: 'Errored',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'errored'),
-      meta: {
-        color: 'lightblue',
-        width: 200,
-      },
     }),
   ];
 
@@ -80,7 +64,13 @@ export function InstrumentTable() {
 function getClickableCell(getValue, row, key) {
   return (
     <div
-      style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+      style={{
+        width: '100%',
+        height: '100%',
+        cursor: 'pointer',
+        backgroundColor:
+          getValue() > 0 ? getColorFromStatus(key) : 'transparent',
+      }}
       onClick={() => {
         return (state.view.query.value =
           'status:' + key + ' instrument:' + row.original.name);

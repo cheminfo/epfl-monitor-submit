@@ -2,6 +2,7 @@ import { createTableColumnHelper, Table } from 'react-science/ui';
 
 import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
+import { getColorFromStatus } from './getColorFromStatus.js';
 
 export function FilesTable() {
   useSignals();
@@ -12,37 +13,26 @@ export function FilesTable() {
     columnHelper.accessor('lastModified', {
       header: 'Date',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue }) =>
         new Date(getValue())
           .toISOString()
           .replace('T', ' ')
           .replace(/\..*/, ''),
-      meta: { color: 'yellow', width: 400 },
     }),
     columnHelper.accessor('name', {
       header: 'Name',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue }) => getValue(),
-      meta: { color: 'yellow', width: 400 },
     }),
     columnHelper.accessor('instrument', {
       header: 'Instrument',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue }) => getValue(),
-      meta: { color: 'yellow', width: 400 },
     }),
     columnHelper.accessor('status', {
       header: 'Status',
       enableSorting: true,
-      sortingFn: 'auto',
       cell: ({ getValue }) => getValue(),
-      meta: {
-        color: 'lightblue',
-        width: 200,
-      },
     }),
   ];
 
@@ -56,20 +46,7 @@ export function FilesTable() {
         stickyHeader={true}
         renderRowTr={(trProps, row) => {
           // transparent by default
-          let color = 'transparent';
-          switch (row.original.status) {
-            case 'to_process':
-              color = 'lightyellow';
-              break;
-            case 'errored':
-              color = 'pink';
-              break;
-            case 'processed':
-              color = 'lightgreen';
-              break;
-            default:
-              break;
-          }
+          let color = getColorFromStatus(row.original.status);
           return <tr {...trProps} style={{ backgroundColor: color }} />;
         }}
         columns={columns}
