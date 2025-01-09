@@ -1,6 +1,6 @@
 import { signal, effect } from '@preact/signals-react';
 
-const state = {
+export const state = {
   data: {
     stats: signal({}),
   },
@@ -27,7 +27,3 @@ effect(() => {
       state.view.files.value = data;
     });
 });
-
-export default function getState() {
-  return state;
-}

@@ -1,18 +1,17 @@
 import { useSignals } from '@preact/signals-react/runtime';
-import getState from './getState.jsx';
+import { state } from './getState.jsx';
+import { InputGroup } from '@blueprintjs/core';
 
 export default function Query() {
   useSignals();
-  const querySignal = getState().view.query;
+  const querySignal = state.view.query;
 
   return (
     <div>
-      <input
-        type="text"
-        value={querySignal.value}
-        onInput={(e) => {
-          querySignal.value = e.target.value;
-        }}
+      <InputGroup
+        type="search"
+        leftIcon="search"
+        onValueChange={(value) => (querySignal.value = value)}
       />
     </div>
   );

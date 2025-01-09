@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import getState from './getState.jsx';
+import { state } from './getState.jsx';
 import { useSignals } from '@preact/signals-react/runtime';
 
 export default function useInitState() {
-  const state = getState();
   useSignals();
 
   // the first time I need to load the stats from the backend

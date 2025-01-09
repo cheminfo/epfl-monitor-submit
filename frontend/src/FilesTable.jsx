@@ -1,11 +1,11 @@
 import { createTableColumnHelper, Table } from 'react-science/ui';
 
 import { useSignals } from '@preact/signals-react/runtime';
-import getState from './getState.jsx';
+import { state } from './getState.jsx';
 
 export default function FilesTable() {
   useSignals();
-  const filesSignal = getState().view.files;
+  const filesSignal = state.view.files;
 
   const columnHelper = createTableColumnHelper();
   const columns = [
@@ -48,7 +48,6 @@ export default function FilesTable() {
 
   return (
     <div>
-      <h2>Files</h2>
       <Table
         bordered={true}
         compact={true}

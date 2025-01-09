@@ -4,10 +4,11 @@ import {
   ValueRenderers,
 } from 'react-science/ui';
 import { useSignals } from '@preact/signals-react/runtime';
-import getState from './getState.jsx';
+import { state } from './getState.jsx';
+import { Section } from '@blueprintjs/core';
 
 export default function InstrumentTable() {
-  const statsSignal = getState().data.stats;
+  const statsSignal = state.data.stats;
   useSignals();
   const columnHelper = createTableColumnHelper();
   const columns = [
@@ -51,15 +52,17 @@ export default function InstrumentTable() {
   ];
 
   return (
-    <Table
-      bordered={true}
-      compact={true}
-      interactive={false}
-      striped={false}
-      stickyHeader={true}
-      columns={columns}
-      virtualizeRows={false}
-      data={statsSignal.value.result?.instruments || []}
-    />
+    <Section title="The list of instruments">
+      <Table
+        bordered={true}
+        compact={true}
+        interactive={false}
+        striped={false}
+        stickyHeader={true}
+        columns={columns}
+        virtualizeRows={false}
+        data={statsSignal.value.result?.instruments || []}
+      />
+    </Section>
   );
 }
