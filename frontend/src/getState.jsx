@@ -1,4 +1,4 @@
-import { signal, effect } from '@preact/signals-react';
+import { signal } from '@preact/signals-react';
 
 export const state = {
   data: {
@@ -16,14 +16,3 @@ export const state = {
     },
   },
 };
-
-effect(() => {
-  // define url parameters
-  const params = new URLSearchParams();
-  params.append('query', state.view.query.value);
-  fetch('http://127.0.0.1:50107/v1/search' + '?' + params.toString())
-    .then((res) => res.json())
-    .then((data) => {
-      state.view.files.value = data;
-    });
-});

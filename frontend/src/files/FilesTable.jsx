@@ -1,7 +1,7 @@
 import { createTableColumnHelper, Table } from 'react-science/ui';
 
 import { useSignals } from '@preact/signals-react/runtime';
-import { state } from './getState.jsx';
+import { state } from '../getState.jsx';
 
 export default function FilesTable() {
   useSignals();
