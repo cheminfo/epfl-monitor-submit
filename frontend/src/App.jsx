@@ -7,15 +7,13 @@ import FilesTable from './FilesTable.jsx';
 import Query from './Query.jsx';
 import DebugViewState from './DebugViewState.jsx';
 import DebugDataState from './DebugDataState.jsx';
-import useInitState from './useInitState.jsx';
 import { useEffect } from 'react';
 import getState from './getState.jsx';
-import { useSignals } from '@preact/signals-react/runtime';
+import Form from './form/Form.jsx';
+import DebugTempState from './DebugTempState.jsx';
 
 function App() {
   const state = getState();
-  const querySignal = state.view.query;
-  useSignals();
 
   // the first time I need to load the stats from the backend
   useEffect(() => {
@@ -37,24 +35,14 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
-  // need to get the files from the backend every time the query changes
-  useEffect(() => {
-    // define url parameters
-    const params = new URLSearchParams();
-    params.append('query', state.view.query.value);
-    fetch('http://127.0.0.1:50107/v1/search' + '?' + params.toString())
-      .then((res) => res.json())
-      .then((data) => {
-        state.view.files.value = data;
-      });
-  }, [querySignal.value]);
-
   return (
     <>
+      <Form />
       <h2>Backend Data</h2>
       <InstrumentTable />
       <Query />
       <FilesTable />
+      <DebugTempState />
       <div style={{ display: 'flex' }}>
         <div style={{ width: '50%' }}>
           <h3>Debug Data State</h3>

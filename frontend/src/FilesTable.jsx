@@ -47,15 +47,18 @@ export default function FilesTable() {
   ];
 
   return (
-    <Table
-      bordered={true}
-      compact={true}
-      interactive={false}
-      striped={false}
-      stickyHeader={true}
-      columns={columns}
-      virtualizeRows={false}
-      data={filesSignal.value?.result || []}
-    />
+    <div>
+      <h2>Files</h2>
+      <Table
+        bordered={true}
+        compact={true}
+        interactive={false}
+        striped={false}
+        stickyHeader={true}
+        columns={columns}
+        virtualizeRows={false}
+        data={filesSignal.value?.result || []}
+      />
+    </div>
   );
 }

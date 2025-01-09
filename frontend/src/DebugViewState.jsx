@@ -5,5 +5,10 @@ export default function DebugViewState() {
   useSignals();
   const state = getState();
 
-  return <pre>{JSON.stringify(state.view, null, 2)}</pre>;
+  return (
+    <pre>
+      {Math.random()}
+      {JSON.stringify(state.view, undefined, 2)}
+    </pre>
+  );
 }
