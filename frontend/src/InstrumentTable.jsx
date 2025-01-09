@@ -3,10 +3,12 @@ import {
   Table,
   ValueRenderers,
 } from 'react-science/ui';
-import useDataState from './useDataState.jsx';
+import { useSignals } from '@preact/signals-react/runtime';
+import getState from './getState.jsx';
 
 export default function InstrumentTable() {
-  const data = useDataState();
+  const statsSignal = getState().data.stats;
+  useSignals();
   const columnHelper = createTableColumnHelper();
   const columns = [
     columnHelper.accessor('name', {
@@ -57,7 +59,7 @@ export default function InstrumentTable() {
       stickyHeader={true}
       columns={columns}
       virtualizeRows={false}
-      data={data?.result?.instruments || []}
+      data={statsSignal.value.result?.instruments || []}
     />
   );
 }

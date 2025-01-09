@@ -1,20 +1,9 @@
-import 'react-science/styles/preflight.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
-import './global.css';
-import InstrumentTable from './InstrumentTable.jsx';
-import FilesTable from './FilesTable.jsx';
-import Query from './Query.jsx';
-import DebugViewState from './DebugViewState.jsx';
-import DebugDataState from './DebugDataState.jsx';
-import useInitState from './useInitState.jsx';
 import { useEffect } from 'react';
 import getState from './getState.jsx';
 import { useSignals } from '@preact/signals-react/runtime';
 
-function App() {
+export default function useInitState() {
   const state = getState();
-  const querySignal = state.view.query;
   useSignals();
 
   // the first time I need to load the stats from the backend
@@ -47,26 +36,5 @@ function App() {
       .then((data) => {
         state.view.files.value = data;
       });
-  }, [querySignal.value]);
-
-  return (
-    <>
-      <h2>Backend Data</h2>
-      <InstrumentTable />
-      <Query />
-      <FilesTable />
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '50%' }}>
-          <h3>Debug Data State</h3>
-          <DebugDataState />
-        </div>
-        <div style={{ width: '50%' }}>
-          <h3>Debug View State</h3>
-          <DebugViewState />
-        </div>
-      </div>
-    </>
-  );
+  }, [state.view.query.value]);
 }
-
-export default App;

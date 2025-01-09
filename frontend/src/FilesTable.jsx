@@ -1,8 +1,12 @@
 import { createTableColumnHelper, Table } from 'react-science/ui';
-import useFilesState from './useFilesState.jsx';
+
+import { useSignals } from '@preact/signals-react/runtime';
+import getState from './getState.jsx';
 
 export default function FilesTable() {
-  const data = useFilesState();
+  useSignals();
+  const filesSignal = getState().view.files;
+
   const columnHelper = createTableColumnHelper();
   const columns = [
     columnHelper.accessor('lastModified', {
@@ -51,7 +55,7 @@ export default function FilesTable() {
       stickyHeader={true}
       columns={columns}
       virtualizeRows={false}
-      data={data?.result || []}
+      data={filesSignal.value?.result || []}
     />
   );
 }
