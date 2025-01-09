@@ -2,10 +2,10 @@ import 'react-science/styles/preflight.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import './global.css';
-import InstrumentTable from './InstrumentTable.jsx';
+import { InstrumentTable } from './InstrumentTable.jsx';
 import { useEffect } from 'react';
 import { state } from './getState.jsx';
-import Test from './test/Test.jsx';
+import { Test } from './test/Test.jsx';
 import { Files } from './files/Files.jsx';
 import { Debug } from './debug/Debug.jsx';
 

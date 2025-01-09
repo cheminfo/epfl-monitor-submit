@@ -7,7 +7,7 @@ import { useSignals } from '@preact/signals-react/runtime';
 import { state } from './getState.jsx';
 import { Section } from '@blueprintjs/core';
 
-export default function InstrumentTable() {
+export function InstrumentTable() {
   const statsSignal = state.data.stats;
   const querySignal = state.view.query;
   useSignals();
@@ -32,17 +32,7 @@ export default function InstrumentTable() {
       header: 'Processed Last Month',
       enableSorting: true,
       sortingFn: 'auto',
-      cell: ({ getValue, row }) => (
-        <div
-          style={{ width: '100%', height: '100%', cursor: 'pointer' }}
-          onClick={() => {
-            return (querySignal.value =
-              'status:processed instrument:' + row.original.name);
-          }}
-        >
-          {getValue()}
-        </div>
-      ),
+      cell: ({ getValue, row }) => getClickableCell(getValue, row, 'processed'),
       meta: {
         color: 'lightblue',
         width: 200,
@@ -52,17 +42,8 @@ export default function InstrumentTable() {
       header: 'To process',
       enableSorting: true,
       sortingFn: 'auto',
-      cell: ({ getValue, row }) => (
-        <div
-          style={{ width: '100%', height: '100%', cursor: 'pointer' }}
-          onClick={() => {
-            return (querySignal.value =
-              'status:to_process instrument:' + row.original.name);
-          }}
-        >
-          {getValue()}
-        </div>
-      ),
+      cell: ({ getValue, row }) =>
+        getClickableCell(getValue, row, 'to_process'),
       meta: {
         color: 'lightblue',
         width: 200,
@@ -72,17 +53,7 @@ export default function InstrumentTable() {
       header: 'Errored',
       enableSorting: true,
       sortingFn: 'auto',
-      cell: ({ getValue, row }) => (
-        <div
-          style={{ width: '100%', height: '100%', cursor: 'pointer' }}
-          onClick={() => {
-            return (querySignal.value =
-              'status:errored instrument:' + row.original.name);
-          }}
-        >
-          {getValue()}
-        </div>
-      ),
+      cell: ({ getValue, row }) => getClickableCell(getValue, row, 'errored'),
       meta: {
         color: 'lightblue',
         width: 200,
@@ -103,5 +74,19 @@ export default function InstrumentTable() {
         data={statsSignal.value.result?.instruments || []}
       />
     </Section>
+  );
+}
+
+function getClickableCell(getValue, row, key) {
+  return (
+    <div
+      style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+      onClick={() => {
+        return (state.view.query.value =
+          'status:' + key + ' instrument:' + row.original.name);
+      }}
+    >
+      {getValue()}
+    </div>
   );
 }

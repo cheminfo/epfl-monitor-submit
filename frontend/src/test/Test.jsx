@@ -1,8 +1,8 @@
 import { Section } from '@blueprintjs/core';
-import DebugTempState from './DebugTempState.jsx';
-import Form from './Form.jsx';
+import { DebugTempState } from './DebugTempState.jsx';
+import { Form } from './Form.jsx';
 
-export default function Test() {
+export function Test() {
   return (
     <Section title="Simple test case changing the temp state">
       <div style={{ display: 'flex' }}>

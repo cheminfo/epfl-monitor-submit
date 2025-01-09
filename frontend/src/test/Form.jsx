@@ -2,7 +2,7 @@ import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 import { Card, FormGroup, InputGroup } from '@blueprintjs/core';
 
-export default function Form() {
+export function Form() {
   useSignals();
 
   const form = state.temp.form;

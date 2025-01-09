@@ -15,7 +15,7 @@ effect(() => {
     });
 });
 
-export default function Query() {
+export function QueryFiles() {
   useSignals();
   const querySignal = state.view.query;
 
