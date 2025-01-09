@@ -54,6 +54,24 @@ export default function FilesTable() {
         interactive={false}
         striped={false}
         stickyHeader={true}
+        renderRowTr={(trProps, row) => {
+          // transparent by default
+          let color = 'transparent';
+          switch (row.original.status) {
+            case 'to_process':
+              color = 'lightyellow';
+              break;
+            case 'errored':
+              color = 'pink';
+              break;
+            case 'processed':
+              color = 'lightgreen';
+              break;
+            default:
+              break;
+          }
+          return <tr {...trProps} style={{ backgroundColor: color }} />;
+        }}
         columns={columns}
         virtualizeRows={false}
         data={filesSignal.value?.result || []}

@@ -3,15 +3,11 @@ import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import './global.css';
 import InstrumentTable from './InstrumentTable.jsx';
-import FilesTable from './files/FilesTable.jsx';
-import Query from './files/QueryFiles.jsx';
-import DebugViewState from './debug/DebugViewState.jsx';
-import DebugDataState from './debug/DebugDataState.jsx';
 import { useEffect } from 'react';
 import { state } from './getState.jsx';
 import Test from './test/Test.jsx';
-import { Section } from '@blueprintjs/core';
 import { Files } from './files/Files.jsx';
+import { Debug } from './debug/Debug.jsx';
 
 function App() {
   // the first time I need to load the stats from the backend
@@ -33,18 +29,7 @@ function App() {
       <Test />
       <InstrumentTable />
       <Files />
-      <Section title="Debug information">
-        <div style={{ display: 'flex' }}>
-          <div style={{ width: '50%' }}>
-            <h3>Debug Data State</h3>
-            <DebugDataState />
-          </div>
-          <div style={{ width: '50%' }}>
-            <h3>Debug View State</h3>
-            <DebugViewState />
-          </div>
-        </div>
-      </Section>
+      <Debug />
     </>
   );
 }

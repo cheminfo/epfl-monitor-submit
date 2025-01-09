@@ -1,7 +1,7 @@
 import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 
-export default function DebugViewState() {
+export function DebugViewState() {
   useSignals();
 
   return (

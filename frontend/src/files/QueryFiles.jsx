@@ -24,6 +24,7 @@ export default function Query() {
       <InputGroup
         type="search"
         leftIcon="search"
+        value={querySignal.value}
         onValueChange={(value) => (querySignal.value = value)}
       />
     </div>

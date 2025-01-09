@@ -9,6 +9,7 @@ import { Section } from '@blueprintjs/core';
 
 export default function InstrumentTable() {
   const statsSignal = state.data.stats;
+  const querySignal = state.view.query;
   useSignals();
   const columnHelper = createTableColumnHelper();
   const columns = [
@@ -16,14 +17,32 @@ export default function InstrumentTable() {
       header: 'Name',
       enableSorting: true,
       sortingFn: 'auto',
-      cell: ({ getValue }) => getValue(),
+      cell: ({ getValue }) => (
+        <a
+          onClick={() => {
+            return (querySignal.value = 'instrument:' + getValue());
+          }}
+        >
+          {getValue()}
+        </a>
+      ),
       meta: { color: 'yellow', width: 400 },
     }),
     columnHelper.accessor('processed.lastMonth', {
       header: 'Processed Last Month',
       enableSorting: true,
       sortingFn: 'auto',
-      cell: ({ getValue }) => getValue(),
+      cell: ({ getValue, row }) => (
+        <div
+          style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+          onClick={() => {
+            return (querySignal.value =
+              'status:processed instrument:' + row.original.name);
+          }}
+        >
+          {getValue()}
+        </div>
+      ),
       meta: {
         color: 'lightblue',
         width: 200,
@@ -33,7 +52,17 @@ export default function InstrumentTable() {
       header: 'To process',
       enableSorting: true,
       sortingFn: 'auto',
-      cell: ({ getValue }) => getValue(),
+      cell: ({ getValue, row }) => (
+        <div
+          style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+          onClick={() => {
+            return (querySignal.value =
+              'status:to_process instrument:' + row.original.name);
+          }}
+        >
+          {getValue()}
+        </div>
+      ),
       meta: {
         color: 'lightblue',
         width: 200,
@@ -43,7 +72,17 @@ export default function InstrumentTable() {
       header: 'Errored',
       enableSorting: true,
       sortingFn: 'auto',
-      cell: ({ getValue }) => getValue(),
+      cell: ({ getValue, row }) => (
+        <div
+          style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+          onClick={() => {
+            return (querySignal.value =
+              'status:errored instrument:' + row.original.name);
+          }}
+        >
+          {getValue()}
+        </div>
+      ),
       meta: {
         color: 'lightblue',
         width: 200,
