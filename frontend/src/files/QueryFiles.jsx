@@ -7,13 +7,32 @@ import { effect } from '@preact/signals-react';
 effect(() => {
   // define url parameters
   const params = new URLSearchParams();
-  params.append('query', state.view.query.value);
+  const range = state.view.range.value;
+  const lastModified = getLastModified(range);
+  params.append(
+    'query',
+    state.view.query.value +
+      (lastModified ? ' lastModified:>' + lastModified : ''),
+  );
   fetch('http://127.0.0.1:50107/v1/search' + '?' + params.toString())
     .then((res) => res.json())
     .then((data) => {
       state.view.files.value = data;
     });
 });
+
+function getLastModified(range) {
+  switch (range) {
+    case 'lastMonth':
+      return new Date().setMonth(new Date().getMonth() - 1);
+    case 'last12Months':
+      return new Date().setFullYear(new Date().getFullYear() - 1);
+    case 'all':
+      return undefined;
+    default:
+      return undefined;
+  }
+}
 
 export function QueryFiles() {
   useSignals();

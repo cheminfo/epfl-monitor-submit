@@ -119,7 +119,6 @@ function getPerMonths(db) {
         toProcess: 0,
         processed: 0,
         errored: 0,
-        countOtherNuclei: 0,
         month,
         firstDayOfMonthEpoch: new Date(year, month, 1).getTime(),
       });

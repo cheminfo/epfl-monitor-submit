@@ -8,6 +8,8 @@ import { state } from './getState.jsx';
 import { Test } from './test/Test.jsx';
 import { Files } from './files/Files.jsx';
 import { Debug } from './debug/Debug.jsx';
+import { Charts } from './charts/Charts.jsx';
+import { SelectRange } from './files/SelectRange.jsx';
 
 function App() {
   // the first time I need to load the stats from the backend
@@ -27,10 +29,12 @@ function App() {
   return (
     <>
       <Test />
+      <SelectRange />
       <div style={{ display: 'flex' }}>
         <InstrumentTable />
         <Files />
       </div>
+      <Charts />
       <Debug />
     </>
   );

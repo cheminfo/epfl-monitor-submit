@@ -27,18 +27,18 @@ export function InstrumentTable() {
         </a>
       ),
     }),
-    columnHelper.accessor('processed.lastMonth', {
-      header: 'Processed Last Month',
+    columnHelper.accessor('processed.' + state.view.range.value, {
+      header: 'Processed',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'processed'),
     }),
-    columnHelper.accessor('to_process.lastMonth', {
+    columnHelper.accessor('to_process.' + state.view.range.value, {
       header: 'To process',
       enableSorting: true,
       cell: ({ getValue, row }) =>
         getClickableCell(getValue, row, 'to_process'),
     }),
-    columnHelper.accessor('errored.lastMonth', {
+    columnHelper.accessor('errored.' + state.view.range.value, {
       header: 'Errored',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'errored'),

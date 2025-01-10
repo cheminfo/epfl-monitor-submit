@@ -5,6 +5,7 @@ export const state = {
     stats: signal({}),
   },
   view: {
+    range: signal('lastMonth'),
     query: signal(''),
     files: signal([]),
   },
