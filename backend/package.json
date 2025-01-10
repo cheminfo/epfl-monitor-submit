@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "DEBUG=* node --watch src/api/server.js",
+    "dev": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/api/server.js",
     "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js",
     "test-only": "vitest --run"
   },

@@ -4,6 +4,8 @@ import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
+import { myToaster } from '../myToaster.js';
+
 export function FilesTable() {
   useSignals();
   const filesSignal = state.view.files;
@@ -34,6 +36,54 @@ export function FilesTable() {
       enableSorting: true,
       cell: ({ getValue }) => getValue(),
     }),
+    columnHelper.accessor('md5', {
+      header: 'Download',
+      enableSorting: false,
+      cell: ({ getValue }) => (
+        <a
+          href={`http://localhost:50107/v1/getFile?md5=${getValue()}`}
+          download
+        >
+          ⤓
+        </a>
+      ),
+    }),
+    columnHelper.accessor('md5', {
+      header: 'Move to to_process',
+      enableSorting: false,
+      cell: ({ getValue, row }) =>
+        row.original.status !== 'to_process' && (
+          <a
+            href={`http://localhost:50107/v1/moveFile?md5=${getValue()}&targetFolder=to_process`}
+          >
+            <span
+              style={{
+                color: getColorFromStatus('to_process', { light: false }),
+              }}
+            >
+              ⇥
+            </span>
+          </a>
+        ),
+    }),
+    columnHelper.accessor('md5', {
+      header: 'Move to errored',
+      enableSorting: false,
+      cell: ({ getValue, row }) =>
+        // create a clickable div that use the full space of the cell and call moveFile function
+        row.original.status !== 'errored' && (
+          <div
+            style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+            onClick={() => moveFile(row, 'errored')}
+          >
+            <span
+              style={{ color: getColorFromStatus('errored', { light: false }) }}
+            >
+              ⇥
+            </span>
+          </div>
+        ),
+    }),
   ];
 
   return (
@@ -55,4 +105,22 @@ export function FilesTable() {
       />
     </div>
   );
+}
+
+// move the file and display the result in a
+async function moveFile(row, targetFolder) {
+  // make an ajax query to move the file
+  const response = await fetch(
+    `http://localhost:50107/v1/moveFile?md5=${row.original.md5}&targetFolder=${targetFolder}`,
+  );
+  const data = await response.json();
+  if (data.status === 'ok') {
+    // show a message
+    myToaster.show({ message: 'File moved', intent: 'success' });
+    // need to trigger a refresh of the files by changing query string
+    state.view.query.peek();
+  } else {
+    // show an error message
+    myToaster.show({ message: data.message, intent: 'danger' });
+  }
 }

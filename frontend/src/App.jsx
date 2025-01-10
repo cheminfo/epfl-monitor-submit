@@ -27,8 +27,10 @@ function App() {
   return (
     <>
       <Test />
-      <InstrumentTable />
-      <Files />
+      <div style={{ display: 'flex' }}>
+        <InstrumentTable />
+        <Files />
+      </div>
       <Debug />
     </>
   );

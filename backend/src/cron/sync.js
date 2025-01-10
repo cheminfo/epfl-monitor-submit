@@ -3,13 +3,13 @@ import delay from 'delay';
 
 import { getDB } from '../db/getDB.js';
 import { updateStatsInDB } from '../db/updateStatsInDB.js';
+import { getPath } from '../utils/getPath.js';
 
 import { syncPath } from './syncPath.js';
 
 const debug = debugLibrary('sync');
 
-const dataPath =
-  process.env.DATA_PATH || new URL('/data', import.meta.url).pathname;
+const dataPath = getPath();
 
 /**
  * Sync the data path with the database inside an infinite loop
