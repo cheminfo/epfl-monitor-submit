@@ -7,7 +7,7 @@ import { effect } from '@preact/signals-react';
 effect(() => {
   // define url parameters
   const params = new URLSearchParams();
-  const range = state.view.range.value;
+  const range = state.preferences.range.value;
   const lastModified = getLastModified(range);
   params.append(
     'query',

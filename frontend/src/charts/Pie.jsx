@@ -1,6 +1,7 @@
 import { ResponsivePie } from '@nivo/pie';
 import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
+import { getColorFromStatus } from '../files/getColorFromStatus.js';
 
 export function Pie() {
   useSignals();
@@ -11,10 +12,14 @@ export function Pie() {
     <ResponsivePie
       data={data}
       id="name"
-      value={state.view.range.value}
+      value={state.preferences.range.value}
       margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
       activeOuterRadiusOffset={8}
-      colors={['lightgreen', 'pink', 'lightyellow']}
+      colors={[
+        getColorFromStatus('processed'),
+        getColorFromStatus('errored'),
+        getColorFromStatus('to_process'),
+      ]}
       onClick={(e) => {
         state.view.query.value = e.data.query;
       }}

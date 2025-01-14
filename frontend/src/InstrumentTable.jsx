@@ -27,18 +27,18 @@ export function InstrumentTable() {
         </a>
       ),
     }),
-    columnHelper.accessor('processed.' + state.view.range.value, {
+    columnHelper.accessor('processed.' + state.preferences.range.value, {
       header: 'Processed',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'processed'),
     }),
-    columnHelper.accessor('to_process.' + state.view.range.value, {
+    columnHelper.accessor('to_process.' + state.preferences.range.value, {
       header: 'To process',
       enableSorting: true,
       cell: ({ getValue, row }) =>
         getClickableCell(getValue, row, 'to_process'),
     }),
-    columnHelper.accessor('errored.' + state.view.range.value, {
+    columnHelper.accessor('errored.' + state.preferences.range.value, {
       header: 'Errored',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'errored'),

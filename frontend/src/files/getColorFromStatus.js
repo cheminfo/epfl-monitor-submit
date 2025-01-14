@@ -1,26 +1,26 @@
+const colorMapping = {
+  to_process: {
+    light: 'lightyellow',
+    dark: 'yellow',
+  },
+  errored: {
+    light: 'pink',
+    dark: 'red',
+  },
+  processed: {
+    light: 'lightgreen',
+    dark: 'green',
+  },
+};
+
+/**
+ *
+ * @param {string} status
+ * @param {object} [options={}]
+ * @param {boolean} [options.light=true]
+ * @returns {string}
+ */
 export function getColorFromStatus(status, options = {}) {
   const { light = true } = options;
-  if (light) {
-    switch (status) {
-      case 'to_process':
-        return 'lightyellow';
-      case 'errored':
-        return 'pink';
-      case 'processed':
-        return 'lightgreen';
-      default:
-        return 'transparent';
-    }
-  } else {
-    switch (status) {
-      case 'to_process':
-        return 'yellow';
-      case 'errored':
-        return 'red';
-      case 'processed':
-        return 'green';
-      default:
-        return 'transparent';
-    }
-  }
+  return colorMapping[status]?.[light ? 'light' : 'dark'] || 'transparent';
 }

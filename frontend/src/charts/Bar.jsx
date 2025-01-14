@@ -1,6 +1,7 @@
 import { ResponsiveBar } from '@nivo/bar';
 import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
+import { getColorFromStatus } from '../files/getColorFromStatus.js';
 
 export function Bar() {
   useSignals();
@@ -11,7 +12,11 @@ export function Bar() {
     <ResponsiveBar
       data={data}
       keys={['errored', 'processed', 'toProcess']}
-      colors={['pink', 'lightgreen', 'lightyellow']}
+      colors={[
+        getColorFromStatus('errored'),
+        getColorFromStatus('processed'),
+        getColorFromStatus('toProcess'),
+      ]}
       indexBy="month"
       margin={{ top: 10, right: 30, bottom: 90, left: 60 }}
       padding={0.3}
