@@ -22,20 +22,20 @@ services:
       options:
         max-size: '50m'
     environment:
-      - DATA_PATH=/data/
+      - .env
     volumes:
       - ./sqlite:/node/sqlite
-      - ./data:/node/data
+      - ${DATA_PATH}:/node/data
 
   sync:
     build:
       dockerfile: Dockerfile.backend
     restart: unless-stopped
     environment:
-      - DATA_PATH=/data/
+      - .env
     volumes:
       - ./sqlite:/node/sqlite
-      - ./data:/node/data
+      - ${DATA_PATH}:/node/data
     command: npm run -w backend devSync
 
   frontend:

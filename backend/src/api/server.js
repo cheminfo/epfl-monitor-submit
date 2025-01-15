@@ -19,10 +19,10 @@ const devLogger = {
 };
 
 const fastify = await createFastify({
-  logger: import.meta.env.DEV ? devLogger : true,
+  logger: process.env.NODE_ENV === 'production' ? true : devLogger,
 });
 
-const port = import.meta.env.PORT ? Number(import.meta.env.PORT) : 50107;
+const port = process.env.PORT ? Number(process.env.PORT) : 50107;
 
 // eslint-disable-next-line no-console
 console.log(`Starting server: http://localhost:${port}`);

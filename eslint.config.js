@@ -3,6 +3,7 @@ import js from 'eslint-config-zakodium/js';
 import jsdoc from 'eslint-config-zakodium/jsdoc';
 import react from 'eslint-config-zakodium/react';
 import unicorn from 'eslint-config-zakodium/unicorn';
+import globals from 'globals';
 
 export default config(
   ...js,
@@ -16,6 +17,15 @@ export default config(
   {
     // Apply Adonis v5 config only to the api.
     files: ['api/**'],
+  },
+  {
+    // Apply React config only to the frontend.
+    files: ['backend/**'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
   },
   {
     // Apply React config only to the frontend.
