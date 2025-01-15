@@ -6,6 +6,7 @@ import { getColorFromStatus } from './getColorFromStatus.js';
 
 import { myToaster } from '../myToaster.js';
 import { getBackendURL } from '../utils/getBackendURL.js';
+import { ValueRenderers } from 'react-science/ui';
 
 export function FilesTable() {
   useSignals();
@@ -94,7 +95,6 @@ export function FilesTable() {
         compact={true}
         interactive={false}
         striped={false}
-        style={{ overflowY: 'hide' }}
         stickyHeader={true}
         tableProps={{ style: { width: '100%', tableLayout: 'fixed' } }}
         renderRowTr={(trProps, row) => {

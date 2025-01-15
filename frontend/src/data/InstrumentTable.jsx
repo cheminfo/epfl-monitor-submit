@@ -42,7 +42,7 @@ export function InstrumentTable() {
   ];
 
   return (
-    <Section title="The list of instruments" style={{ overflowY: 'scroll' }}>
+    <Section title="The list of instruments" style={{ overflowY: 'auto' }}>
       <Table
         bordered={true}
         compact={true}
