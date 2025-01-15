@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
-import { openAsBlob } from 'node:fs';
+
+import { existsSync, openAsBlob } from 'node:fs';
 import { stat, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -23,7 +24,9 @@ export async function syncPath(db, path) {
 
   for (const status of ['processed', 'errored', 'to_process']) {
     for (const instrument of instruments) {
-      const allFiles = await readdir(join(path, instrument, status), {
+      const fullPath = join(path, instrument, status);
+      if (!existsSync(fullPath)) continue;
+      const allFiles = await readdir(join(fullPath), {
         recursive: true,
         withFileTypes: true,
       });

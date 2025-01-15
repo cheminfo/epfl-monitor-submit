@@ -1,4 +1,5 @@
 const colorMapping = {
+  // eslint-disable-next-line camelcase
   to_process: {
     light: 'lightyellow',
     dark: 'yellow',
