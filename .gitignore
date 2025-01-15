@@ -141,4 +141,4 @@ storybook-static
 /blob-report/
 /playwright/.cache/
 
-sqlite3
+sqlite
