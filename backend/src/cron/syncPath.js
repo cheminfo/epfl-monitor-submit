@@ -26,23 +26,29 @@ export async function syncPath(db, path) {
     for (const instrument of instruments) {
       const fullPath = join(path, instrument, status);
       if (!existsSync(fullPath)) continue;
-      const allFiles = await readdir(join(fullPath), {
+      const allFiles = await readdir(fullPath, {
         recursive: true,
         withFileTypes: true,
       });
-      const files = allFiles
-        .filter((dirent) => dirent.isFile())
-        .map((dirent) => dirent.name);
-      for (const filename of files) {
-        const relativePath = join(instrument, status, filename);
+      for (const file of allFiles) {
+        file.relativePath = file.parentPath.replace(fullPath, '');
+      }
+      const files = allFiles.filter((dirent) => dirent.isFile());
+      for (const file of files) {
+        const relativeName = join(
+          instrument,
+          status,
+          file.relativePath,
+          file.name,
+        );
         // check if relativePath exists
-        const existing = pathInDBStmt.all(relativePath);
+        const existing = pathInDBStmt.all(relativeName);
         // if existing we just skip
         if (existing.length > 0) {
           continue;
         }
         // if not existing we insert
-        const filePath = join(path, relativePath);
+        const filePath = join(file.parentPath, file.name);
         const fileStat = await stat(filePath);
         const blob = await openAsBlob(filePath);
         const md5 = md5Library(new Uint8Array(await blob.arrayBuffer()));
@@ -51,11 +57,11 @@ export async function syncPath(db, path) {
         db.prepare(
           'INSERT OR REPLACE INTO files (relativePath, md5, size, lastModified, name, status, instrument) VALUES (?, ?, ?, ?, ?,?, ?)',
         ).run(
-          relativePath,
+          relativeName,
           md5,
           fileStat.size,
           Math.round(fileStat.mtimeMs),
-          filename,
+          file.name,
           status,
           instrument,
         );

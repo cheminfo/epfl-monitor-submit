@@ -14,7 +14,7 @@ test('syncPath', async () => {
   const paths = allEntries.map((entry) => entry.relativePath);
   expect(paths).toStrictEqual([
     'ir3404/processed/a.proc.jdx',
-    'ir3404/processed/b.proc.jdx',
+    'ir3404/processed/2024/01/01/b.proc.jdx',
     'ms1520/processed/c.proc.jdx',
     'ms1520/processed/d.proc.jdx',
     'ir3404/errored/a.err.jdx',
