@@ -1,0 +1,19 @@
+FROM node:22
+
+EXPOSE 4173
+
+RUN mkdir /node
+COPY ./package.json /node/
+COPY frontend/package.json /node/frontend/package.json
+
+WORKDIR /node
+RUN npm i
+
+COPY ./frontend/src /node/frontend/src
+COPY ./frontend/public /node/frontend/public
+COPY ./frontend/vite.config.js /node/frontend/
+COPY ./frontend/index.html /node/frontend/
+
+RUN npm run -w frontend build
+
+CMD npm run -w frontend preview

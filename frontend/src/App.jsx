@@ -11,6 +11,7 @@ import { Files } from './files/Files.jsx';
 import { Debug } from './debug/Debug.jsx';
 import { Charts } from './charts/Charts.jsx';
 import { SelectRange } from './files/SelectRange.jsx';
+import { getBackendURL } from './utils/getBackendURL.js';
 
 const Container = styled.div`
   padding: 10px 20px;
@@ -31,7 +32,7 @@ function App() {
   // the first time I need to load the stats from the backend
   useEffect(() => {
     function getStats() {
-      fetch('http://127.0.0.1:50107/v1/stats')
+      fetch(getBackendURL() + '/v1/stats')
         .then((res) => res.json())
         .then((data) => {
           state.data.stats.value = data;

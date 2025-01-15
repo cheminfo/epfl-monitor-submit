@@ -5,6 +5,7 @@ import { state } from '../getState.jsx';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
 import { myToaster } from '../myToaster.js';
+import { getBackendURL } from '../utils/getBackendURL.js';
 
 export function FilesTable() {
   useSignals();
@@ -40,10 +41,7 @@ export function FilesTable() {
       header: 'Download',
       enableSorting: false,
       cell: ({ getValue }) => (
-        <a
-          href={`http://localhost:50107/v1/getFile?md5=${getValue()}`}
-          download
-        >
+        <a href={getBackendURL() + `/v1/getFile?md5=${getValue()}`} download>
           ⤓
         </a>
       ),
@@ -54,7 +52,10 @@ export function FilesTable() {
       cell: ({ getValue, row }) =>
         row.original.status !== 'to_process' && (
           <a
-            href={`http://localhost:50107/v1/moveFile?md5=${getValue()}&targetFolder=to_process`}
+            href={
+              getBackendURL() +
+              `/v1/moveFile?md5=${getValue()}&targetFolder=to_process`
+            }
           >
             <span
               style={{
@@ -111,7 +112,8 @@ export function FilesTable() {
 async function moveFile(row, targetFolder) {
   // make an ajax query to move the file
   const response = await fetch(
-    `http://localhost:50107/v1/moveFile?md5=${row.original.md5}&targetFolder=${targetFolder}`,
+    getBackendURL() +
+      `/v1/moveFile?md5=${row.original.md5}&targetFolder=${targetFolder}`,
   );
   const data = await response.json();
   if (data.status === 'ok') {

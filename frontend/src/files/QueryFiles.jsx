@@ -3,6 +3,7 @@ import { state } from '../getState.jsx';
 import { InputGroup } from '@blueprintjs/core';
 
 import { effect } from '@preact/signals-react';
+import { getBackendURL } from '../utils/getBackendURL.js';
 
 effect(() => {
   // define url parameters
@@ -14,7 +15,7 @@ effect(() => {
     state.view.query.value +
       (lastModified ? ' lastModified:>' + lastModified : ''),
   );
-  fetch('http://127.0.0.1:50107/v1/search' + '?' + params.toString())
+  fetch(getBackendURL() + '/v1/search' + '?' + params.toString())
     .then((res) => res.json())
     .then((data) => {
       state.view.files.value = data;
