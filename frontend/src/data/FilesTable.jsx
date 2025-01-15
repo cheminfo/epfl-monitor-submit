@@ -94,7 +94,9 @@ export function FilesTable() {
         compact={true}
         interactive={false}
         striped={false}
+        style={{ overflowY: 'hide' }}
         stickyHeader={true}
+        tableProps={{ style: { width: '100%', tableLayout: 'fixed' } }}
         renderRowTr={(trProps, row) => {
           // transparent by default
           let color = getColorFromStatus(row.original.status);

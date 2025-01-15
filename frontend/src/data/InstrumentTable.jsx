@@ -1,17 +1,13 @@
-import {
-  createTableColumnHelper,
-  Table,
-  ValueRenderers,
-} from 'react-science/ui';
+import { createTableColumnHelper, Table } from 'react-science/ui';
 import { useSignals } from '@preact/signals-react/runtime';
-import { state } from './getState.jsx';
 import { Section } from '@blueprintjs/core';
-import { getColorFromStatus } from './files/getColorFromStatus.js';
+import { state } from '../getState.jsx';
+import { getColorFromStatus } from './getColorFromStatus.js';
 
 export function InstrumentTable() {
+  useSignals();
   const statsSignal = state.data.stats;
   const querySignal = state.view.query;
-  useSignals();
   const columnHelper = createTableColumnHelper();
   const columns = [
     columnHelper.accessor('name', {
@@ -46,7 +42,7 @@ export function InstrumentTable() {
   ];
 
   return (
-    <Section title="The list of instruments">
+    <Section title="The list of instruments" style={{ overflowY: 'scroll' }}>
       <Table
         bordered={true}
         compact={true}

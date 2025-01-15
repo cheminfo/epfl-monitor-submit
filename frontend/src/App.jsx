@@ -3,27 +3,28 @@ import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import './global.css';
 import styled from '@emotion/styled';
-import { InstrumentTable } from './InstrumentTable.jsx';
 import { useEffect } from 'react';
 import { state } from './getState.jsx';
-import { Files } from './files/Files.jsx';
 import { Charts } from './charts/Charts.jsx';
-import { SelectRange } from './files/SelectRange.jsx';
 import { getBackendURL } from './utils/getBackendURL.js';
+import { Header } from './header/Header.jsx';
+import { DataWrapper } from './data/DataWrapper.jsx';
 
 const Container = styled.div`
+  display: grid;
+  grid-template-rows: 40px calc((100% - 40px) / 2) calc((100% - 40px) / 2);
+  grid-template-columns: 1fr;
+  height: 100vh;
   padding: 10px 20px;
   background-color: #f5f5f5;
-  //height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+`;
 
-  @media (max-width: 1000px) {
-    padding: 5px;
-    height: auto;
-    overflow: auto;
-  }
+const Content = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  height: 100%;
 `;
 
 function App() {
@@ -43,11 +44,8 @@ function App() {
 
   return (
     <Container>
-      <SelectRange />
-      <div style={{ display: 'flex' }}>
-        <InstrumentTable />
-        <Files />
-      </div>
+      <Header />
+      <DataWrapper />
       <Charts />
     </Container>
   );

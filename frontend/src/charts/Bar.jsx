@@ -1,7 +1,7 @@
 import { ResponsiveBar } from '@nivo/bar';
 import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
-import { getColorFromStatus } from '../files/getColorFromStatus.js';
+import { getColorFromStatus } from '../data/getColorFromStatus.js';
 
 export function Bar() {
   useSignals();
