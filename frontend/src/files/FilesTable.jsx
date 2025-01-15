@@ -46,7 +46,7 @@ export function FilesTable() {
         </a>
       ),
     }),
-    columnHelper.accessor('md5', {
+    columnHelper.accessor('moveToProcess', {
       header: 'Move to to_process',
       enableSorting: false,
       cell: ({ getValue, row }) =>
@@ -67,7 +67,7 @@ export function FilesTable() {
           </a>
         ),
     }),
-    columnHelper.accessor('md5', {
+    columnHelper.accessor('moveToErrored', {
       header: 'Move to errored',
       enableSorting: false,
       cell: ({ getValue, row }) =>
@@ -98,7 +98,13 @@ export function FilesTable() {
         renderRowTr={(trProps, row) => {
           // transparent by default
           let color = getColorFromStatus(row.original.status);
-          return <tr {...trProps} style={{ backgroundColor: color }} />;
+          return (
+            <tr
+              key={row.original.md5}
+              {...trProps}
+              style={{ backgroundColor: color }}
+            />
+          );
         }}
         columns={columns}
         virtualizeRows={false}

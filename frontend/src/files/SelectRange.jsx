@@ -16,7 +16,9 @@ export function SelectRange() {
       <Select
         items={items}
         itemRenderer={(item, { handleClick }) => (
-          <div onClick={handleClick}>{item.label}</div>
+          <div key={item.value} onClick={handleClick}>
+            {item.label}
+          </div>
         )}
         filterable={false}
         fill={true}
