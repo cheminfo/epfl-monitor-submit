@@ -16,12 +16,6 @@ export const state = {
   preferences: {
     range: signal('lastMonth'),
   },
-  temp: {
-    form: {
-      value1: signal('test1'),
-      value2: signal('test2'),
-    },
-  },
 };
 
 /**

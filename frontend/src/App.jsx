@@ -6,9 +6,7 @@ import styled from '@emotion/styled';
 import { InstrumentTable } from './InstrumentTable.jsx';
 import { useEffect } from 'react';
 import { state } from './getState.jsx';
-import { Test } from './test/Test.jsx';
 import { Files } from './files/Files.jsx';
-import { Debug } from './debug/Debug.jsx';
 import { Charts } from './charts/Charts.jsx';
 import { SelectRange } from './files/SelectRange.jsx';
 import { getBackendURL } from './utils/getBackendURL.js';
@@ -45,14 +43,12 @@ function App() {
 
   return (
     <Container>
-      <Test />
       <SelectRange />
       <div style={{ display: 'flex' }}>
         <InstrumentTable />
         <Files />
       </div>
       <Charts />
-      <Debug />
     </Container>
   );
 }
