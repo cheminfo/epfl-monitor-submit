@@ -1,11 +1,9 @@
 import { createTableColumnHelper, Table } from 'react-science/ui';
-import { useSignals } from '@preact/signals-react/runtime';
 import { Section } from '@blueprintjs/core';
 import { state } from '../getState.jsx';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
 export function InstrumentTable() {
-  useSignals();
   const statsSignal = state.data.stats;
   const querySignal = state.view.query;
   const columnHelper = createTableColumnHelper();

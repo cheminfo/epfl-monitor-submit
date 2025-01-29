@@ -1,6 +1,5 @@
 import { createTableColumnHelper, Table } from 'react-science/ui';
 
-import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
@@ -9,7 +8,6 @@ import { getBackendURL } from '../utils/getBackendURL.js';
 import { ValueRenderers } from 'react-science/ui';
 
 export function FilesTable() {
-  useSignals();
   const filesSignal = state.view.files;
 
   const columnHelper = createTableColumnHelper();

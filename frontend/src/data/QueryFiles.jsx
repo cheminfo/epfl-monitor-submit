@@ -1,4 +1,3 @@
-import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 import { InputGroup } from '@blueprintjs/core';
 
@@ -36,7 +35,6 @@ function getLastModified(range) {
 }
 
 export function QueryFiles() {
-  useSignals();
   const querySignal = state.view.query;
 
   return (

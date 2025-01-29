@@ -1,4 +1,3 @@
-import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 import { Select } from '@blueprintjs/select';
 import { Button } from '@blueprintjs/core';
@@ -10,7 +9,6 @@ const items = [
 ];
 
 export function SelectRange() {
-  useSignals();
   return (
     <div style={{ width: '200px', backgroundColor: 'red' }}>
       <Select

@@ -1,11 +1,8 @@
 import { ResponsivePie } from '@nivo/pie';
-import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 import { getColorFromStatus } from '../data/getColorFromStatus.js';
 
 export function Pie() {
-  useSignals();
-
   const data = state.data.stats.value?.result?.statuses || [];
 
   return (

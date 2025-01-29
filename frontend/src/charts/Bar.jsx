@@ -1,11 +1,8 @@
 import { ResponsiveBar } from '@nivo/bar';
-import { useSignals } from '@preact/signals-react/runtime';
 import { state } from '../getState.jsx';
 import { getColorFromStatus } from '../data/getColorFromStatus.js';
 
 export function Bar() {
-  useSignals();
-
   const data = state.data.stats.value?.result?.perMonths || [];
 
   return (
