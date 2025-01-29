@@ -60,6 +60,15 @@ export async function syncPath(db, path) {
         const blob = await openAsBlob(filePath);
         const md5 = md5Library(new Uint8Array(await blob.arrayBuffer()));
 
+        // if current status is not to_process and the existing one is in to_process we delete it
+        // apparently it was processed
+        if (status !== 'to_process') {
+          db.prepare('DELETE from files WHERE md5 = ? AND status = ?').run(
+            md5,
+            'to_process',
+          );
+        }
+
         nbNewFiles += 1;
         // we don't really check if it exists or not, we just insert or update
         db.prepare(

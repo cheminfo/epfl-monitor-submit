@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import debugLibrary from 'debug';
 import delay from 'delay';
 
