@@ -24,7 +24,7 @@ export async function syncPath(db, path) {
 
   for (const status of ['processed', 'errored', 'to_process']) {
     for (const instrument of instruments) {
-      debug(`Syncing instrument: ${instrument} With status: ${status}`);
+      debug(`Syncing instrument: ${instrument} - status: ${status}`);
       const fullPath = join(path, instrument, status);
       if (!existsSync(fullPath)) continue;
       const allFiles = await readdir(fullPath, {
@@ -35,6 +35,8 @@ export async function syncPath(db, path) {
         file.relativePath = file.parentPath.replace(fullPath, '');
       }
       const files = allFiles.filter((dirent) => dirent.isFile());
+      let nbFilesExisting = 0;
+      let nbNewFiles = 0;
       for (const file of files) {
         const relativeName = join(
           instrument,
@@ -46,14 +48,17 @@ export async function syncPath(db, path) {
         const existing = pathInDBStmt.all(relativeName);
         // if existing we just skip
         if (existing.length > 0) {
+          nbFilesExisting += 1;
           continue;
         }
         // if not existing we insert
         const filePath = join(file.parentPath, file.name);
         const fileStat = await stat(filePath);
+
         const blob = await openAsBlob(filePath);
         const md5 = md5Library(new Uint8Array(await blob.arrayBuffer()));
 
+        nbNewFiles += 1;
         // we don't really check if it exists or not, we just insert or update
         db.prepare(
           'INSERT OR REPLACE INTO files (relativePath, md5, size, lastModified, name, status, instrument) VALUES (?, ?, ?, ?, ?,?, ?)',
@@ -67,6 +72,9 @@ export async function syncPath(db, path) {
           instrument,
         );
       }
+      debug(
+        `Instrument: ${instrument} - status: ${status} - existing: ${nbFilesExisting} - new: ${nbNewFiles}`,
+      );
     }
   }
 }
