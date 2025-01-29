@@ -15,11 +15,13 @@ const dataPath = getPath();
  * Sync the data path with the database inside an infinite loop
  */
 export async function cronSync() {
-  const db = await getDB();
-  await syncPath(db, dataPath).catch((error) => debug(error));
-  updateStatsInDB(db);
-  debug('Waiting 1h');
-  await delay(60 * 60 * 1000);
+  while (true) {
+    const db = await getDB();
+    await syncPath(db, dataPath).catch((error) => debug(error));
+    updateStatsInDB(db);
+    debug('Waiting 1h');
+    await delay(60 * 60 * 1000);
+  }
 }
 
 await cronSync()

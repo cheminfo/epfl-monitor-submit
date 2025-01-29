@@ -2,7 +2,6 @@ import { effect } from '@preact/signals-react';
 
 import { state } from '../getState.jsx';
 
-
 effect(() => {
   const subState = {
     preferences: JSON.stringify(JSON.parse(state.preferences)),

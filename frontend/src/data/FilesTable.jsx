@@ -5,7 +5,6 @@ import { getColorFromStatus } from './getColorFromStatus.js';
 
 import { myToaster } from '../myToaster.js';
 import { getBackendURL } from '../utils/getBackendURL.js';
-import { ValueRenderers } from 'react-science/ui';
 
 export function FilesTable() {
   const filesSignal = state.view.files;
