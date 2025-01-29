@@ -51,6 +51,8 @@ export async function syncPath(db, path) {
           nbFilesExisting += 1;
           continue;
         }
+
+        debug(`Inserting: ${relativeName}`);
         // if not existing we insert
         const filePath = join(file.parentPath, file.name);
         const fileStat = await stat(filePath);
