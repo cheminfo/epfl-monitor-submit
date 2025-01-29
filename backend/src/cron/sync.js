@@ -16,6 +16,7 @@ const dataPath = getPath();
  */
 export async function cronSync() {
   while (true) {
+    debug(`Start sync: ${dataPath}`);
     const db = await getDB();
     await syncPath(db, dataPath).catch((error) => debug(error));
     updateStatsInDB(db);

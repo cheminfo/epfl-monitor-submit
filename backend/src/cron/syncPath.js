@@ -24,6 +24,7 @@ export async function syncPath(db, path) {
 
   for (const status of ['processed', 'errored', 'to_process']) {
     for (const instrument of instruments) {
+      debug(`Syncing instrument: ${instrument} With status: ${status}`);
       const fullPath = join(path, instrument, status);
       if (!existsSync(fullPath)) continue;
       const allFiles = await readdir(fullPath, {
@@ -68,6 +69,4 @@ export async function syncPath(db, path) {
       }
     }
   }
-
-  debug('syncPath');
 }
