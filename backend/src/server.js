@@ -1,10 +1,16 @@
+import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifySensible from '@fastify/sensible';
+import fastifySession from '@fastify/session';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import getFastify from 'fastify';
 
-import setupV1 from './v1/v1.js';
+import 'dotenv/config';
+
+import { registerOauth2 } from './api/oauth2.js';
+import { checkAccess } from './api/v1/checkAccess.js';
+import setupV1 from './api/v1/v1.js';
 
 const devLogger = {
   level: 'info',
@@ -43,6 +49,21 @@ fastify.listen(
 async function createFastify(options) {
   const fastify = getFastify(options);
 
+  fastify.register(fastifyCookie);
+  fastify.register(fastifySession, {
+    secret: process.env.SESSION_COOKIE_SECRET,
+    cookieName: 'sessionInfo',
+    cookie: { maxAge: 24 * 60 * 60 * 1000, secure: false },
+  });
+
+  fastify.addHook('preHandler', (request, reply, done) => {
+    console.log('-------- preHandler --------');
+    console.log(request.session?.userinfo);
+    done();
+  });
+
+  registerOauth2(fastify);
+
   fastify.register(fastifyCors, {
     maxAge: 86400,
   });
@@ -54,7 +75,10 @@ async function createFastify(options) {
 
   registerSwagger(fastify);
 
-  fastify.register(setupV1, { prefix: '/v1' });
+  fastify.register(setupV1, {
+    prefix: '/v1',
+    onRequest: checkAccess,
+  });
 
   return fastify;
 }

@@ -29,6 +29,9 @@ export default function stats(fastify) {
  * @returns {Promise<import('fastify').FastifyReply>} - promise of fastify response
  */
 async function process(request, response) {
+  console.log('-------- stats --------');
+  console.log(request.session.userinfo);
+
   const db = await getDB();
   try {
     const result = await getStatsFromDB(db);

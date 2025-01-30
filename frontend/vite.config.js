@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 // https://vite.dev/config/
 // https://github.com/cheminfo/epfl-monitor-submit/issues/7
 export default defineConfig({
+  base: '/frontend/',
   plugins: [
     react({
       babel: {

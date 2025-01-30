@@ -22,7 +22,12 @@ services:
       options:
         max-size: '50m'
     environment:
-      - .env
+      OAUTH2_CLIENT_ID: ${OAUTH2_CLIENT_ID}
+      OAUTH2_CLIENT_SECRET: ${OAUTH2_CLIENT_SECRET}
+      OAUTH2_CALLBACK_URI: ${OAUTH2_CALLBACK_URI}
+      OAUTH2_ALLOWED_EMAILS: ${OAUTH2_ALLOWED_EMAILS}
+      OAUTH2_SUCCESS_CALLBACK_URI: ${OAUTH2_SUCCESS_CALLBACK_URI}
+      SESSION_COOKIE_SECRET: ${SESSION_COOKIE_SECRET}
     volumes:
       - ./sqlite:/node/sqlite
       - ${DATA_PATH}:/node/data
