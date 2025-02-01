@@ -3,7 +3,9 @@ import { Section } from '@blueprintjs/core';
 import { state } from '../getState.jsx';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
-export function InstrumentTable() {
+export function InstrumentTable(props) {
+  const { gridArea } = props;
+
   const statsSignal = state.data.stats;
   const querySignal = state.view.query;
   const columnHelper = createTableColumnHelper();
@@ -40,7 +42,10 @@ export function InstrumentTable() {
   ];
 
   return (
-    <Section title="The list of instruments" style={{ overflowY: 'auto' }}>
+    <Section
+      title="The list of instruments"
+      style={{ gridArea, overflow: 'auto' }}
+    >
       <Table
         bordered={true}
         compact={true}

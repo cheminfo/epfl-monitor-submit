@@ -5,26 +5,33 @@ import './global.css';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
 import { state } from './getState.jsx';
-import { Charts } from './charts/Charts.jsx';
+import { EvolutionPerYearChart } from './charts/EvolutionPerYearChart.jsx';
+import { FilesStatusChart } from './charts/FilesStatusChart.jsx';
 import { getBackendURL } from './utils/getBackendURL.js';
 import { Header } from './header/Header.jsx';
 import { DataWrapper } from './data/DataWrapper.jsx';
+import { InstrumentTable } from './data/InstrumentTable.jsx';
+import { Files } from './data/Files.jsx';
 
-const Container = styled.div`
+const Body = styled.div`
   display: grid;
-  grid-template-rows: 40px calc((100% - 40px) / 2) calc((100% - 40px) / 2);
-  grid-template-columns: 1fr;
   height: 100vh;
-  padding: 10px 20px;
-  background-color: #f5f5f5;
-`;
-
-const Content = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 10px;
-  height: 100%;
+  overflow: hidden;
+  grid-template-rows: 40px repeat(11, 1fr);
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas:
+    'hd hd hd hd hd hd hd hd hd hd hd hd'
+    'in in in in in in fi fi fi fi fi fi'
+    'in in in in in in fi fi fi fi fi fi'
+    'in in in in in in fi fi fi fi fi fi'
+    'in in in in in in fi fi fi fi fi fi'
+    'in in in in in in fi fi fi fi fi fi'
+    'in in in in in in fi fi fi fi fi fi'
+    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
+    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
+    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
+    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
+    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2';
 `;
 
 function App() {
@@ -43,11 +50,13 @@ function App() {
   }, []);
 
   return (
-    <Container>
-      <Header />
-      <DataWrapper />
-      <Charts />
-    </Container>
+    <Body>
+      <Header gridArea="hd" />
+      <InstrumentTable gridArea="in" />
+      <Files gridArea="fi" />
+      <FilesStatusChart gridArea="c1" />
+      <EvolutionPerYearChart gridArea="c2" />
+    </Body>
   );
 }
 

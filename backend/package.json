@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/server.js",
+    "dev": "set -a; source ../.env 2>/dev/null; set +a; DEBUG=* node --watch src/server.js",
     "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js",
     "test-only": "vitest --run"
   },
@@ -21,6 +21,7 @@
     "debug": "^4.4.0",
     "delay": "^6.0.0",
     "dotenv": "^16.4.7",
+    "dotenv-cli": "^8.0.0",
     "fastify": "^5.2.1",
     "ldapts": "^7.3.1",
     "md5": "^2.3.0",

@@ -93,7 +93,9 @@ export function FilesTable() {
         interactive={false}
         striped={false}
         stickyHeader={true}
-        tableProps={{ style: { width: '100%', tableLayout: 'fixed' } }}
+        tableProps={{
+          style: { width: '100%', tableLayout: 'fixed' },
+        }}
         renderRowTr={(trProps, row) => {
           // transparent by default
           let color = getColorFromStatus(row.original.status);

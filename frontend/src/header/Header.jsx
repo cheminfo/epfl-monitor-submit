@@ -1,12 +1,12 @@
 import { SelectRange } from './SelectRange.jsx';
 import styled from '@emotion/styled';
 
-export function Header() {
+export function Header(props) {
+  const {gridArea} = props;
   const Container = styled.div`
-    display: flex;
+    grid-area: ${gridArea};
     justify-content: center;
-    align-items: center;
-    text-align: center;
+    align-content: center;
   `;
 
   return (

@@ -1,8 +1,5 @@
 import debugLibrary from 'debug';
 
-import { getDB } from '../../db/getDB.js';
-import { getStatsFromDB } from '../../db/getStatsFromDB.js';
-
 const debug = debugLibrary('stats');
 
 /**
@@ -11,11 +8,11 @@ const debug = debugLibrary('stats');
  */
 export default function stats(fastify) {
   fastify.route({
-    url: '/stats',
+    url: '/userinfo',
     method: ['GET', 'POST'],
     handler: process,
     schema: {
-      summary: 'Get overall stats',
+      summary: 'Get logged in user information',
       description: '',
       querystring: {},
     },
@@ -29,12 +26,10 @@ export default function stats(fastify) {
  * @returns {Promise<import('fastify').FastifyReply>} - promise of fastify response
  */
 async function process(request, response) {
-  const db = await getDB();
   try {
-    const result = await getStatsFromDB(db);
     return await response.send({
       status: 'ok',
-      result,
+      result: request.session?.userinfo || null,
     });
   } catch (error) {
     debug(`Error: ${error.stack}`);

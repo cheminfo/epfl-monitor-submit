@@ -53,12 +53,32 @@ async function createFastify(options) {
   fastify.register(fastifySession, {
     secret: process.env.SESSION_COOKIE_SECRET,
     cookieName: 'sessionInfo',
-    cookie: { maxAge: 24 * 60 * 60 * 1000, secure: false },
+    cookie: { maxAge: 24 * 60 * 60 * 1000, secure: 'auto' },
   });
 
   fastify.addHook('preHandler', (request, reply, done) => {
-    console.log('-------- preHandler --------');
-    console.log(request.session?.userinfo);
+    const allowedWithoutAuth = [
+      '/login',
+      '/login/callback',
+      '/documentation',
+      '/v1/userinfo',
+    ];
+    if (
+      process.env.OAUTH2_CALLBACK_URI?.startsWith('http://127.0.0.1') ||
+      process.env.OAUTH2_CALLBACK_URI?.startsWith('http://localhost')
+    ) {
+      done();
+      return;
+    }
+
+    // if url starts with one of allowedWithoutAuth, then no need to check for auth
+    if (
+      !allowedWithoutAuth.some((url) => request.url.startsWith(url)) &&
+      !request.session?.userinfo
+    ) {
+      reply.redirect('/login');
+      return;
+    }
     done();
   });
 
