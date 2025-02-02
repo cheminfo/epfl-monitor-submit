@@ -1,4 +1,4 @@
-import { updateState } from '../getState.jsx';
+import { updateState } from '../state.js';
 
 export function loadPreferences() {
   // load from localstorage the preferences

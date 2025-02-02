@@ -1,4 +1,4 @@
-import { state } from '../getState.jsx';
+import { state } from '../state.js';
 import { Select } from '@blueprintjs/select';
 import { Button } from '@blueprintjs/core';
 

@@ -1,6 +1,6 @@
 import { createTableColumnHelper, Table } from 'react-science/ui';
 import { Section } from '@blueprintjs/core';
-import { state } from '../getState.jsx';
+import { state } from '../state.js';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
 export function InstrumentTable(props) {

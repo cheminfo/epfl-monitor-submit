@@ -1,33 +1,31 @@
 import 'react-science/styles/preflight.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
-import './global.css';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
-import { state } from './getState.jsx';
+import { state } from './state.js';
 import { EvolutionPerYearChart } from './charts/EvolutionPerYearChart.jsx';
 import { FilesStatusChart } from './charts/FilesStatusChart.jsx';
 import { getBackendURL } from './utils/getBackendURL.js';
 import { Header } from './header/Header.jsx';
-import { DataWrapper } from './data/DataWrapper.jsx';
 import { InstrumentTable } from './data/InstrumentTable.jsx';
 import { Files } from './data/Files.jsx';
 
 const Body = styled.div`
   display: grid;
   height: 100vh;
-  overflow: hidden;
+  overflow: hidden; /* hide the scrollbar */
   grid-template-rows: 40px repeat(11, 1fr);
   grid-template-columns: repeat(12, 1fr);
   grid-template-areas:
-    'hd hd hd hd hd hd hd hd hd hd hd hd'
+    'hd hd hd hd hd hd hd hd hd hd hd hd' /* header */
+    'in in in in in in fi fi fi fi fi fi' /* instrument + files */
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
-    'in in in in in in fi fi fi fi fi fi'
-    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
+    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2' /* charts */
     'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
     'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
     'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'

@@ -1,6 +1,6 @@
 import { createTableColumnHelper, Table } from 'react-science/ui';
 
-import { state } from '../getState.jsx';
+import { state } from '../state.js';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
 import { myToaster } from '../myToaster.js';

@@ -1,5 +1,5 @@
 import { ResponsivePie } from '@nivo/pie';
-import { state } from '../getState.jsx';
+import { state } from '../state.js';
 import { getColorFromStatus } from '../data/getColorFromStatus.js';
 import { Card } from '@blueprintjs/core';
 

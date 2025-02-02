@@ -1,6 +1,6 @@
 import { effect } from '@preact/signals-react';
 
-import { state } from '../getState.jsx';
+import { state } from '../state.js';
 
 effect(() => {
   const subState = {
