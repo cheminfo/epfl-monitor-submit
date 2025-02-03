@@ -3,7 +3,7 @@ import { createTableColumnHelper, Table } from 'react-science/ui';
 import { state } from '../state.js';
 import { getColorFromStatus } from './getColorFromStatus.js';
 
-import { myToaster } from '../myToaster.js';
+import { topMessage } from '../utils/topMessage.js';
 import { getBackendURL } from '../utils/getBackendURL.js';
 
 export function FilesTable() {
@@ -125,11 +125,11 @@ async function moveFile(row, targetFolder) {
   const data = await response.json();
   if (data.status === 'ok') {
     // show a message
-    myToaster.show({ message: 'File moved', intent: 'success' });
+    topMessage.show({ message: 'File moved', intent: 'success' });
     // need to trigger a refresh of the files by changing query string
     state.view.query.peek();
   } else {
     // show an error message
-    myToaster.show({ message: data.message, intent: 'danger' });
+    topMessage.show({ message: data.message, intent: 'danger' });
   }
 }

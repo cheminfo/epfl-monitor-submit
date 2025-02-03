@@ -1,9 +1,9 @@
 /* eslint-disable unicorn/prefer-structured-clone */
 import { test, expect } from 'vitest';
 
-import { state, updateState } from '../getState';
+import { state, updateState } from '../state';
 
-test('getState', () => {
+test('state', () => {
   expect(JSON.parse(JSON.stringify(state))).toStrictEqual({
     data: { stats: {} },
     view: { query: '', files: [] },

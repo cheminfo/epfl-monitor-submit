@@ -18,14 +18,14 @@ const Body = styled.div`
   grid-template-rows: 40px repeat(11, 1fr);
   grid-template-columns: repeat(12, 1fr);
   grid-template-areas:
-    'hd hd hd hd hd hd hd hd hd hd hd hd' /* header */
-    'in in in in in in fi fi fi fi fi fi' /* instrument + files */
+    'hd hd hd hd hd hd hd hd hd hd hd hd' /* hd: header */
+    'in in in in in in fi fi fi fi fi fi' /* in: instrument / fi: files */
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
     'in in in in in in fi fi fi fi fi fi'
-    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2' /* charts */
+    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2' /* c1: status of files / c2: evolution over years */
     'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
     'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
     'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
