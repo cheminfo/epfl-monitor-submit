@@ -1,9 +1,6 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
-import { state } from './state/state.js';
 import { EvolutionPerYearChart } from './charts/EvolutionPerYearChart.jsx';
 import { FilesStatusChart } from './charts/FilesStatusChart.jsx';
-import { getBackendURL } from './utils/getBackendURL.js';
 import { Header } from './header/Header.jsx';
 import { InstrumentTable } from './data/InstrumentTable.jsx';
 import { Files } from './data/Files.jsx';
