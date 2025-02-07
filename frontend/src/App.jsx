@@ -1,6 +1,3 @@
-import 'react-science/styles/preflight.css';
-import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
 import { state } from './state.js';
