@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
-import { state } from './state.js';
+import { state } from './state/state.js';
 import { EvolutionPerYearChart } from './charts/EvolutionPerYearChart.jsx';
 import { FilesStatusChart } from './charts/FilesStatusChart.jsx';
 import { getBackendURL } from './utils/getBackendURL.js';
@@ -31,18 +31,6 @@ const Body = styled.div`
 
 function App() {
   // the first time I need to load the stats from the backend
-  useEffect(() => {
-    function getStats() {
-      fetch(getBackendURL() + '/v1/stats')
-        .then((res) => res.json())
-        .then((data) => {
-          state.data.stats.value = data;
-        });
-    }
-    getStats();
-    const interval = setInterval(getStats, 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <Body>

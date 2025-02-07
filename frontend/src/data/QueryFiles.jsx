@@ -1,4 +1,4 @@
-import { state } from '../state.js';
+import { state } from '../state/state.js';
 import { InputGroup } from '@blueprintjs/core';
 
 import { effect } from '@preact/signals-react';

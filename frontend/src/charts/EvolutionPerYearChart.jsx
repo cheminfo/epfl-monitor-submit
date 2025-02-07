@@ -1,5 +1,5 @@
 import { ResponsiveBar } from '@nivo/bar';
-import { state } from '../state.js';
+import { state } from '../state/state.js';
 import { getColorFromStatus } from '../data/getColorFromStatus.js';
 import { Card } from '@blueprintjs/core';
 
