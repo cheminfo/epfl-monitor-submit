@@ -35,11 +35,11 @@ export function FilesTable() {
       enableSorting: true,
       cell: ({ getValue }) => getValue(),
     }),
-    columnHelper.accessor('md5', {
+    columnHelper.accessor('hash', {
       header: 'Download',
       enableSorting: false,
       cell: ({ getValue }) => (
-        <a href={getBackendURL() + `/v1/getFile?md5=${getValue()}`} download>
+        <a href={getBackendURL() + `/v1/getFile?hash=${getValue()}`} download>
           ⤓
         </a>
       ),
@@ -52,7 +52,7 @@ export function FilesTable() {
           <a
             href={
               getBackendURL() +
-              `/v1/moveFile?md5=${getValue()}&targetFolder=to_process`
+              `/v1/moveFile?hash=${getValue()}&targetFolder=to_process`
             }
           >
             <span
@@ -101,7 +101,7 @@ export function FilesTable() {
           let color = getColorFromStatus(row.original.status);
           return (
             <tr
-              key={row.original.md5}
+              key={row.original.hash}
               {...trProps}
               style={{ backgroundColor: color }}
             />
@@ -120,7 +120,7 @@ async function moveFile(row, targetFolder) {
   // make an ajax query to move the file
   const response = await fetch(
     getBackendURL() +
-      `/v1/moveFile?md5=${row.original.md5}&targetFolder=${targetFolder}`,
+      `/v1/moveFile?hash=${row.original.hash}&targetFolder=${targetFolder}`,
   );
   const data = await response.json();
   if (data.status === 'ok') {

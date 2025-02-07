@@ -15,14 +15,14 @@ export default function getFile(fastify) {
     method: ['GET', 'POST'],
     handler: process,
     schema: {
-      summary: 'Get the file for a specific md5',
+      summary: 'Get the file for a specific hash',
       description: '',
       querystring: {
         type: 'object',
         properties: {
-          md5: {
+          hash: {
             type: 'string',
-            description: 'The md5 of the file',
+            description: 'The hash of the file',
           },
         },
       },
@@ -52,16 +52,16 @@ export default function getFile(fastify) {
 async function process(request, response) {
   const params = request.body || request.query || {};
   const db = await getDB();
-  const md5 = params.md5;
+  const hash = params.hash;
 
   try {
-    if (!md5) {
-      throw new Error('No md5 provided');
+    if (!hash) {
+      throw new Error('No hash provided');
     }
-    const files = db.prepare('SELECT * FROM files WHERE md5 = ?').all(md5);
+    const files = db.prepare('SELECT * FROM files WHERE hash = ?').all(hash);
 
     if (!files) {
-      throw new Error('No file found for this md5');
+      throw new Error('No file found for this hash');
     }
     const path = join(getPath(), files[0].relativePath);
     if (!existsSync(path)) {

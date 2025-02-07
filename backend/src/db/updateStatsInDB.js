@@ -9,7 +9,7 @@ export function updateStatsInDB(db) {
     lastUpdate: Date.now(),
   };
 
-  stats.nbFiles = getOneStat(db, 'files', 'md5', '1=1');
+  stats.nbFiles = getOneStat(db, 'files', 'hash', '1=1');
 
   // retrieve distinct instruments based on files.instrument
   stats.instruments = db
@@ -26,7 +26,7 @@ export function updateStatsInDB(db) {
         ...getOneStat(
           db,
           'files',
-          'md5',
+          'hash',
           `instrument = '${instrument.name}' AND status = '${status.name}'`,
         ),
         query: `instrument:${instrument.name} status:${status.name}`,
@@ -51,7 +51,7 @@ function getPerYears(db) {
   const stmtYears = db.prepare(
     `
     SELECT 
-      COUNT(md5) as count,
+      COUNT(hash) as count,
       SUM(CASE WHEN status = 'to_process' THEN 1 ELSE 0 END) as toProcess, 
       SUM(CASE WHEN status = 'processed' THEN 1 ELSE 0 END) as processed, 
       SUM(CASE WHEN status = 'errored' THEN 1 ELSE 0 END) as errored, 
@@ -91,7 +91,7 @@ function getPerMonths(db) {
   const stmtMonths = db.prepare(
     `
     SELECT 
-      COUNT(md5) as count,
+      COUNT(hash) as count,
       SUM(CASE WHEN status = 'to_process' THEN 1 ELSE 0 END) as toProcess, 
       SUM(CASE WHEN status = 'processed' THEN 1 ELSE 0 END) as processed, 
       SUM(CASE WHEN status = 'errored' THEN 1 ELSE 0 END) as errored,       CAST(strftime('%m', lastModified/1000, 'unixepoch') -1 AS INTEGER) as month,

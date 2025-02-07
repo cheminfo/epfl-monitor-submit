@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS files (
   relativePath TEXT PRIMARY KEY,
-  md5 TEXT,
+  hash TEXT,
   name TEXT,
   instrument TEXT,
   status TEXT,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS files (
   size INTEGER
 );
 
-CREATE INDEX IF NOT EXISTS files_md5 ON files (md5);
+CREATE INDEX IF NOT EXISTS files_hash ON files (hash);
 
 CREATE TABLE IF NOT EXISTS metas (
   key TEXT PRIMARY KEY,

@@ -5,7 +5,8 @@ import { stat, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import debugLibrary from 'debug';
-import md5Library from 'md5';
+
+import { getHash } from '../utils/getHash.js';
 
 const debug = debugLibrary('syncPath');
 
@@ -58,13 +59,13 @@ export async function syncPath(db, path) {
         const fileStat = await stat(filePath);
 
         const blob = await openAsBlob(filePath);
-        const md5 = md5Library(new Uint8Array(await blob.arrayBuffer()));
+        const hash = getHash(new Uint8Array(await blob.arrayBuffer()));
 
         // if current status is not to_process and the existing one is in to_process we delete it
         // apparently it was processed
         if (status !== 'to_process') {
-          db.prepare('DELETE from files WHERE md5 = ? AND status = ?').run(
-            md5,
+          db.prepare('DELETE from files WHERE hash = ? AND status = ?').run(
+            hash,
             'to_process',
           );
         }
@@ -72,10 +73,10 @@ export async function syncPath(db, path) {
         nbNewFiles += 1;
         // we don't really check if it exists or not, we just insert or update
         db.prepare(
-          'INSERT OR REPLACE INTO files (relativePath, md5, size, lastModified, name, status, instrument) VALUES (?, ?, ?, ?, ?,?, ?)',
+          'INSERT OR REPLACE INTO files (relativePath, hash, size, lastModified, name, status, instrument) VALUES (?, ?, ?, ?, ?,?, ?)',
         ).run(
           relativeName,
-          md5,
+          hash,
           fileStat.size,
           Math.round(fileStat.mtimeMs),
           file.name,
