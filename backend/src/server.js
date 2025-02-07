@@ -6,8 +6,6 @@ import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import getFastify from 'fastify';
 
-import 'dotenv/config';
-
 import { registerOauth2 } from './api/oauth2.js';
 import { checkAccess } from './api/v1/checkAccess.js';
 import setupV1 from './api/v1/v1.js';
