@@ -20,28 +20,28 @@ export const state = {
 
 /**
  *
- * @param {Object} state
- * @returns {Object}
+ * @param {object} state
+ * @param stateInfo
+ * @returns {object}
  */
 function getStateInfo(state, stateInfo = {}) {
-  for (const key in state) {
-    if (state.hasOwnProperty(key)) {
-      if (isSignalCheck(state[key])) {
-        stateInfo[key] = {
-          isSignal,
-          isLeeve,
-          type: typeof state[key].value,
-          initialValue: structuredClone(state[key].value),
-        };
-      } else if (typeof state[key] === 'object') {
-        stateInfo[key] = getStateInfo(state[key]);
-      } else {
-        stateInfo[key] = {
-          isLeeve,
-          type: typeof state[key],
-          initialValue: structuredClone(state[key]),
-        };
-      }
+  // Object.entries only returns enumerable properties = own properties
+  for (const [key, entry] of Object.entries(state)) {
+    if (isSignalCheck(entry)) {
+      stateInfo[key] = {
+        isSignal,
+        isLeeve,
+        type: typeof entry.value,
+        initialValue: structuredClone(entry.value),
+      };
+    } else if (typeof entry === 'object') {
+      stateInfo[key] = getStateInfo(entry);
+    } else {
+      stateInfo[key] = {
+        isLeeve,
+        type: typeof entry,
+        initialValue: structuredClone(entry),
+      };
     }
   }
 
@@ -51,12 +51,13 @@ function getStateInfo(state, stateInfo = {}) {
 const stateInfo = getStateInfo(state);
 
 function isSignalCheck(value) {
-  return value.constructor.prototype.brand === preactSymbol;
+  return value.brand === preactSymbol;
 }
 
 /**
  * Function that will update the state with new values
  * Only leeves can be updated
+ * @param newState
  */
 export function updateState(newState) {
   updateStateInternal(stateInfo, state, newState);
@@ -93,6 +94,7 @@ function loadPreferences() {
   effect(() => {
     const subState = {
       // need to keep JSON.parse(JSON.stringify()) to remove signals
+      // eslint-disable-next-line unicorn/prefer-structured-clone
       preferences: JSON.parse(JSON.stringify(state.preferences)),
     };
     const stringifiedState = JSON.stringify(subState);
