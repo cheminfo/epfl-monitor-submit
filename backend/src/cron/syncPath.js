@@ -59,7 +59,7 @@ export async function syncPath(db, path) {
         const fileStat = await stat(filePath);
 
         const blob = await openAsBlob(filePath);
-        const hash = getHash(new Uint8Array(await blob.arrayBuffer()));
+        const hash = await getHash(new Uint8Array(await blob.arrayBuffer()));
 
         // if current status is not to_process and the existing one is in to_process we delete it
         // apparently it was processed

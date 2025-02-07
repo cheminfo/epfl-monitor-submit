@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
+import { setTimeout as delay } from 'node:timers/promises';
+
 import debugLibrary from 'debug';
-import delay from 'delay';
 
 import { getDB } from '../db/getDB.js';
 import { updateStatsInDB } from '../db/updateStatsInDB.js';

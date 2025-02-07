@@ -37,7 +37,7 @@ export function updateStatsInDB(db) {
     const status = stats.statuses[i];
     stats.statuses[i] = {
       name: status.name,
-      ...getOneStat(db, 'files', 'md5', `status = '${status.name}'`),
+      ...getOneStat(db, 'files', 'hash', `status = '${status.name}'`),
       query: `status:${status.name}`,
     };
   }
