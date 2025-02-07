@@ -1,7 +1,3 @@
-import debugLibrary from 'debug';
-
-const debug = debugLibrary('stats');
-
 /**
  * Get the overall stats of the database
  * @param {import('fastify').FastifyInstance} fastify - fastify instance
@@ -32,7 +28,7 @@ async function process(request, response) {
       result: request.session?.userinfo || null,
     });
   } catch (error) {
-    debug(`Error: ${error.stack}`);
+    request.log.error(error);
     return response
       .send({ result: {}, message: error.toString(), status: 'error' })
       .code(400);

@@ -1,9 +1,5 @@
-import debugLibrary from 'debug';
-
 import { getDB } from '../../db/getDB.js';
 import { queryFiles } from '../../db/queryFiles.js';
-
-const debug = debugLibrary('search');
 
 /**
  * Search files based on a query string
@@ -46,7 +42,7 @@ async function process(request, response) {
       result,
     });
   } catch (error) {
-    debug(`Error: ${error.stack}`);
+    request.log.error(error);
     return response
       .send({ result: {}, message: error.toString(), status: 'error' })
       .code(400);

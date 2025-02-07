@@ -1,9 +1,5 @@
-import debugLibrary from 'debug';
-
 import { getDB } from '../../db/getDB.js';
 import { getStatsFromDB } from '../../db/getStatsFromDB.js';
-
-const debug = debugLibrary('stats');
 
 /**
  * Get the overall stats of the database
@@ -37,7 +33,7 @@ async function process(request, response) {
       result,
     });
   } catch (error) {
-    debug(`Error: ${error.stack}`);
+    request.log.error(error);
     return response
       .send({ result: {}, message: error.toString(), status: 'error' })
       .code(400);

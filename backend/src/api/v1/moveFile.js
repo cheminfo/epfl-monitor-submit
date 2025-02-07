@@ -2,12 +2,8 @@ import { existsSync } from 'node:fs';
 import { rename } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import debugLibrary from 'debug';
-
 import { getDB } from '../../db/getDB.js';
 import { getPath } from '../../utils/getPath.js';
-
-const debug = debugLibrary('search');
 
 /**
  * Move the file to the errored folder
@@ -79,7 +75,7 @@ async function process(request, response) {
       message: 'File moved',
     });
   } catch (error) {
-    debug(`Error: ${error.stack}`);
+    request.log.error(error);
     return response
       .send({ result: {}, message: error.toString(), status: 'error' })
       .code(400);

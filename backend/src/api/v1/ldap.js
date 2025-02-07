@@ -1,7 +1,4 @@
-import debugLibrary from 'debug';
 import { Client } from 'ldapts';
-
-const debug = debugLibrary('search');
 
 /**
  * Search files based on a query string
@@ -63,7 +60,7 @@ async function process(request, response) {
       },
     });
   } catch (error) {
-    debug(`Error: ${error.stack}`);
+    request.log.error(error);
     return response
       .send({ result: {}, message: error.toString(), status: 'error' })
       .code(400);
