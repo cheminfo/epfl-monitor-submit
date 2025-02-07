@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/prefer-structured-clone */
 import { test, expect } from 'vitest';
 
-import { state, updateState } from '../state/state';
+import { state, updateState } from '../state';
 
 test('state', () => {
   expect(JSON.parse(JSON.stringify(state))).toStrictEqual({
