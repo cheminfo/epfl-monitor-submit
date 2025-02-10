@@ -1,25 +1,27 @@
 /* eslint-disable unicorn/prefer-structured-clone */
 import { test, expect } from 'vitest';
 
-import { state, updateState } from '../state';
+import { getStateInfo } from '../getStateInfo.js';
+import { state } from '../state';
+import { updateState } from '../updateState.js';
 
 test('state', () => {
   expect(JSON.parse(JSON.stringify(state))).toStrictEqual({
+    uuid: 'b9ad32ff-caa8-3dfd-1697-fc4a8dd79bcc',
     data: { stats: {} },
     view: { query: '', files: [] },
     preferences: { range: 'lastMonth' },
-    temp: { form: { value1: 'test1', value2: 'test2' } },
   });
+  const stateInfo = getStateInfo(state);
 
-  updateState({ temp: { form: { value1: 'test3' } } });
+  updateState(state, stateInfo, {
+    view: { query: 'the query', value1: 'test3' },
+  });
 
   expect(JSON.parse(JSON.stringify(state))).toStrictEqual({
+    uuid: 'b9ad32ff-caa8-3dfd-1697-fc4a8dd79bcc',
     data: { stats: {} },
-    view: { query: '', files: [] },
+    view: { query: 'the query', files: [] },
     preferences: { range: 'lastMonth' },
-    temp: { form: { value1: 'test3', value2: 'test2' } },
   });
-
-  // console.log(state.temp.form);
-  // console.log(stateInfo);
 });

@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "DEBUG=* node --env-file=../.env --watch src/server.js",
-    "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js",
-    "test-only": "vitest --run"
+    "dev": "DEBUG=* node --env-file=.env --watch src/server.js",
+    "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
@@ -25,7 +24,8 @@
     "smart-sqlite3-filter": "^0.4.0"
   },
   "devDependencies": {
-    "fifo-logger": "^1.0.0"
+    "fifo-logger": "^1.0.0",
+    "vitest": "^3.0.5"
   },
   "volta": {
     "extends": "../package.json"

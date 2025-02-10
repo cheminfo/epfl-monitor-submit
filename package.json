@@ -13,7 +13,7 @@
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",
     "test": "npm run eslint && npm run prettier && npm run test-only",
-    "test-only": "vitest --run"
+    "test-only": "NODE_OPTIONS=\"--experimental-webstorage --localstorage-file=:memory:\" vitest --run"
   },
   "devDependencies": {
     "@preact/signals-react-transform": "^0.5.1",
