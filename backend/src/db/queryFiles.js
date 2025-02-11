@@ -1,8 +1,6 @@
 import debugLibrary from 'debug';
 import { search } from 'smart-sqlite3-filter';
 
-const debug = debugLibrary('queryFiles');
-
 /**
  * search for files based on a 'smart' query
  * @param {string} queryString - search query string like 'name:abc'
@@ -13,11 +11,12 @@ const debug = debugLibrary('queryFiles');
  */
 
 export async function queryFiles(queryString, db, options = {}) {
-  debug(`Searching for: ${queryString}`);
+  const { logger } = options;
+  logger?.info(`Searching for: ${queryString}`);
   const entries = search(queryString, db, {
     tableName: 'files',
     orderBy: 'lastModified desc',
-    logger: options.logger,
+    logger,
   });
   return entries;
 }

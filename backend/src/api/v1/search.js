@@ -36,7 +36,9 @@ async function process(request, response) {
   const params = request.body || request.query || {};
   const db = await getDB();
   try {
-    const result = await queryFiles(params.query || '', db);
+    const result = await queryFiles(params.query || '', db, {
+      logger: request.log,
+    });
     return await response.send({
       status: 'ok',
       result,

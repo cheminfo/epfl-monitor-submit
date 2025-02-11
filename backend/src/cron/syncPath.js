@@ -4,11 +4,11 @@ import { existsSync, openAsBlob } from 'node:fs';
 import { stat, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
-import debugLibrary from 'debug';
+import pino from 'pino';
 
 import { getHash } from '../utils/getHash.js';
 
-const debug = debugLibrary('syncPath');
+const logger = pino({ messageKey: 'syncPath' });
 
 /**
  * Ensure that the db contains all the files in the path
@@ -25,7 +25,7 @@ export async function syncPath(db, path) {
 
   for (const status of ['processed', 'errored', 'to_process']) {
     for (const instrument of instruments) {
-      debug(`Syncing instrument: ${instrument} - status: ${status}`);
+      logger.info(`Syncing instrument: ${instrument} - status: ${status}`);
       const fullPath = join(path, instrument, status);
       if (!existsSync(fullPath)) continue;
       const allFiles = await readdir(fullPath, {
@@ -53,7 +53,7 @@ export async function syncPath(db, path) {
           continue;
         }
 
-        debug(`Inserting: ${relativeName}`);
+        logger.info(`Inserting: ${relativeName}`);
         // if not existing we insert
         const filePath = join(file.parentPath, file.name);
         const fileStat = await stat(filePath);
@@ -84,7 +84,7 @@ export async function syncPath(db, path) {
           instrument,
         );
       }
-      debug(
+      logger.info(
         `Instrument: ${instrument} - status: ${status} - existing: ${nbFilesExisting} - new: ${nbNewFiles}`,
       );
     }

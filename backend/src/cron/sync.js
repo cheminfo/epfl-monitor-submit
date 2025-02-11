@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import { setTimeout as delay } from 'node:timers/promises';
 
-import debugLibrary from 'debug';
+import pino from 'pino';
 
 import { getDB } from '../db/getDB.js';
 import { updateStatsInDB } from '../db/updateStatsInDB.js';
@@ -9,7 +9,7 @@ import { getPath } from '../utils/getPath.js';
 
 import { syncPath } from './syncPath.js';
 
-const debug = debugLibrary('sync');
+const logger = pino({ messageKey: 'sync' });
 
 const dataPath = getPath();
 
@@ -18,15 +18,15 @@ const dataPath = getPath();
  */
 export async function cronSync() {
   while (true) {
-    debug(`Start sync: ${dataPath}`);
+    logger.info(`Start sync: ${dataPath}`);
     const db = await getDB();
-    await syncPath(db, dataPath).catch((error) => debug(error));
+    await syncPath(db, dataPath).catch((error) => logger.error(error));
     updateStatsInDB(db);
-    debug('Waiting 1h');
+    logger.info('Waiting 1h');
     await delay(60 * 60 * 1000);
   }
 }
 
 await cronSync()
-  .then(() => debug('End of process'))
-  .catch((error) => debug(error));
+  .then(() => logger.info('End of process'))
+  .catch((error) => logger.error(error));
