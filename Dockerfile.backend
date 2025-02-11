@@ -12,5 +12,5 @@ RUN npm i
 COPY ./backend/src /node/backend/src
 
 
-CMD npm run -w backend dev
+CMD npm run -w backend start
 

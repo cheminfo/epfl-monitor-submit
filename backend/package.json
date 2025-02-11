@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "DEBUG=* node --env-file=.env --watch src/server.js",
-    "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js"
+    "start": "DEBUG=* node src/server.js",
+    "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js",
+    "sync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node src/cron/sync.js"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",

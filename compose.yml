@@ -41,7 +41,7 @@ services:
     volumes:
       - ./sqlite:/node/sqlite
       - ${DATA_PATH}:/node/data
-    command: npm run -w backend devSync
+    command: npm run -w backend sync
 
   frontend:
     build:
