@@ -1,6 +1,7 @@
-import { state } from '../state/state.js';
-import { Select } from '@blueprintjs/select';
 import { Button, MenuItem } from '@blueprintjs/core';
+import { Select } from '@blueprintjs/select';
+
+import { state } from '../state/state.js';
 
 const items = [
   { value: 'lastMonth', label: 'Last month' },
@@ -8,7 +9,7 @@ const items = [
   { value: 'total', label: 'All' },
 ];
 
-const itemRenderer = (item, { handleClick, handleFocus, modifiers, query }) => {
+const itemRenderer = (item, { handleClick, handleFocus, modifiers }) => {
   return (
     <MenuItem
       active={modifiers.active}
@@ -33,7 +34,7 @@ export function SelectRange() {
         }}
       >
         <Button
-          fill={true}
+          fill
           alignText="left"
           text={
             items.find((item) => item.value === state.preferences.range.value)

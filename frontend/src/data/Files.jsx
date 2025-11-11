@@ -1,6 +1,7 @@
 import { Section } from '@blueprintjs/core';
-import { QueryFiles } from './QueryFiles.jsx';
+
 import { FilesTable } from './FilesTable.jsx';
+import { QueryFiles } from './QueryFiles.jsx';
 
 export function Files(props) {
   const { gridArea } = props;

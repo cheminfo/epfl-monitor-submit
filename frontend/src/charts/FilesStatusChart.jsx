@@ -1,7 +1,8 @@
-import { ResponsivePie } from '@nivo/pie';
-import { state } from '../state/state.js';
-import { getColorFromStatus } from '../data/getColorFromStatus.js';
 import { Card } from '@blueprintjs/core';
+import { ResponsivePie } from '@nivo/pie';
+
+import { getColorFromStatus } from '../data/getColorFromStatus.js';
+import { state } from '../state/state.js';
 
 export function FilesStatusChart(props) {
   const { gridArea } = props;

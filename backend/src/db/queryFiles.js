@@ -1,4 +1,3 @@
-import debugLibrary from 'debug';
 import { search } from 'smart-sqlite3-filter';
 
 /**

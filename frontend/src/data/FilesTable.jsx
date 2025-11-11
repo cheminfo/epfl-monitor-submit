@@ -1,10 +1,10 @@
-import { createTableColumnHelper, Table } from 'react-science/ui';
+import { Table, createTableColumnHelper } from 'react-science/ui';
 
 import { state } from '../state/state.js';
-import { getColorFromStatus } from './getColorFromStatus.js';
-
-import { topMessage } from '../utils/topMessage.js';
 import { getBackendURL } from '../utils/getBackendURL.js';
+import { topMessage } from '../utils/topMessage.js';
+
+import { getColorFromStatus } from './getColorFromStatus.js';
 
 export function FilesTable() {
   const filesSignal = state.view.files;
@@ -39,7 +39,7 @@ export function FilesTable() {
       header: 'Download',
       enableSorting: false,
       cell: ({ getValue }) => (
-        <a href={getBackendURL() + `/v1/getFile?hash=${getValue()}`} download>
+        <a href={`${getBackendURL()}/v1/getFile?hash=${getValue()}`} download>
           ⤓
         </a>
       ),
@@ -50,10 +50,7 @@ export function FilesTable() {
       cell: ({ getValue, row }) =>
         row.original.status !== 'to_process' && (
           <a
-            href={
-              getBackendURL() +
-              `/v1/moveFile?hash=${getValue()}&targetFolder=to_process`
-            }
+            href={`${getBackendURL()}/v1/moveFile?hash=${getValue()}&targetFolder=to_process`}
           >
             <span
               style={{
@@ -68,7 +65,7 @@ export function FilesTable() {
     columnHelper.accessor('moveToErrored', {
       header: 'Move to errored',
       enableSorting: false,
-      cell: ({ getValue, row }) =>
+      cell: ({ row }) =>
         // create a clickable div that use the full space of the cell and call moveFile function
         row.original.status !== 'errored' && (
           <div
@@ -88,11 +85,11 @@ export function FilesTable() {
   return (
     <div>
       <Table
-        bordered={true}
-        compact={true}
+        bordered
+        compact
         interactive={false}
         striped={false}
-        stickyHeader={true}
+        stickyHeader
         tableProps={{
           style: { width: '100%', tableLayout: 'fixed' },
         }}
@@ -119,8 +116,7 @@ export function FilesTable() {
 async function moveFile(row, targetFolder) {
   // make an ajax query to move the file
   const response = await fetch(
-    getBackendURL() +
-      `/v1/moveFile?hash=${row.original.hash}&targetFolder=${targetFolder}`,
+    `${getBackendURL()}/v1/moveFile?hash=${row.original.hash}&targetFolder=${targetFolder}`,
   );
   const data = await response.json();
   if (data.status === 'ok') {

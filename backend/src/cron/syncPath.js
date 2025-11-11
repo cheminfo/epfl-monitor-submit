@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 
 import { existsSync, openAsBlob } from 'node:fs';
-import { stat, readdir } from 'node:fs/promises';
+import { readdir, stat } from 'node:fs/promises';
 import { join } from 'node:path';
 
 import pino from 'pino';

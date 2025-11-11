@@ -10,24 +10,24 @@
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
-    "@fastify/cors": "^10.0.2",
-    "@fastify/oauth2": "^8.1.1",
-    "@fastify/sensible": "^6.0.2",
-    "@fastify/session": "^11.1.0",
-    "@fastify/swagger": "^9.4.0",
-    "@fastify/swagger-ui": "^5.2.0",
-    "better-sqlite3": "^11.7.2",
+    "@fastify/cors": "^11.1.0",
+    "@fastify/oauth2": "^8.1.2",
+    "@fastify/sensible": "^6.0.3",
+    "@fastify/session": "^11.1.1",
+    "@fastify/swagger": "^9.6.0",
+    "@fastify/swagger-ui": "^5.2.3",
+    "better-sqlite3": "^12.4.1",
     "cheminfo-types": "^1.8.1",
-    "fastify": "^5.2.1",
-    "ldapts": "^7.3.1",
-    "pino": "^9.6.0",
-    "pino-pretty": "^13.0.0",
+    "fastify": "^5.6.2",
+    "ldapts": "^8.0.9",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2",
     "postgrator": "^8.0.0",
-    "smart-sqlite3-filter": "^0.4.0"
+    "smart-sqlite3-filter": "^0.7.0"
   },
   "devDependencies": {
-    "fifo-logger": "^1.0.0",
-    "vitest": "^3.0.5"
+    "fifo-logger": "^2.0.1",
+    "vitest": "^4.0.8"
   },
   "volta": {
     "extends": "../package.json"

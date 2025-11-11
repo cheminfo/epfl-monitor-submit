@@ -1,5 +1,6 @@
-import { SelectRange } from './SelectRange.jsx';
 import styled from '@emotion/styled';
+
+import { SelectRange } from './SelectRange.jsx';
 
 const Container = styled.div`
   grid-area: ${(props) => props.gridArea};

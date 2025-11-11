@@ -1,7 +1,7 @@
-import { state } from '../state/state.js';
 import { InputGroup } from '@blueprintjs/core';
-
 import { effect } from '@preact/signals-react';
+
+import { state } from '../state/state.js';
 import { getBackendURL } from '../utils/getBackendURL.js';
 
 effect(() => {
@@ -12,9 +12,9 @@ effect(() => {
   params.append(
     'query',
     state.view.query.value +
-      (lastModified ? ' lastModified:>' + lastModified : ''),
+      (lastModified ? ` lastModified:>${lastModified}` : ''),
   );
-  fetch(getBackendURL() + '/v1/search' + '?' + params.toString())
+  fetch(`${getBackendURL()}/v1/search?${params.toString()}`)
     .then((res) => res.json())
     .then((data) => {
       state.view.files.value = data;

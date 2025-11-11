@@ -1,6 +1,8 @@
-import { createTableColumnHelper, Table } from 'react-science/ui';
 import { Section } from '@blueprintjs/core';
+import { Table, createTableColumnHelper } from 'react-science/ui';
+
 import { state } from '../state/state.js';
+
 import { getColorFromStatus } from './getColorFromStatus.js';
 
 export function InstrumentTable(props) {
@@ -16,25 +18,25 @@ export function InstrumentTable(props) {
       cell: ({ getValue }) => (
         <a
           onClick={() => {
-            return (querySignal.value = 'instrument:' + getValue());
+            return (querySignal.value = `instrument:${  getValue()}`);
           }}
         >
           {getValue()}
         </a>
       ),
     }),
-    columnHelper.accessor('processed.' + state.preferences.range.value, {
+    columnHelper.accessor(`processed.${  state.preferences.range.value}`, {
       header: 'Processed',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'processed'),
     }),
-    columnHelper.accessor('to_process.' + state.preferences.range.value, {
+    columnHelper.accessor(`to_process.${  state.preferences.range.value}`, {
       header: 'To process',
       enableSorting: true,
       cell: ({ getValue, row }) =>
         getClickableCell(getValue, row, 'to_process'),
     }),
-    columnHelper.accessor('errored.' + state.preferences.range.value, {
+    columnHelper.accessor(`errored.${  state.preferences.range.value}`, {
       header: 'Errored',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'errored'),
@@ -47,11 +49,11 @@ export function InstrumentTable(props) {
       style={{ gridArea, overflow: 'auto' }}
     >
       <Table
-        bordered={true}
-        compact={true}
+        bordered
+        compact
         interactive={false}
         striped={false}
-        stickyHeader={true}
+        stickyHeader
         columns={columns}
         virtualizeRows={false}
         data={statsSignal.value.result?.instruments || []}
@@ -72,7 +74,7 @@ function getClickableCell(getValue, row, key) {
       }}
       onClick={() => {
         return (state.view.query.value =
-          'status:' + key + ' instrument:' + row.original.name);
+          `status:${  key  } instrument:${  row.original.name}`);
       }}
     >
       {getValue()}

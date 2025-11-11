@@ -1,4 +1,4 @@
-import { test, expect } from 'vitest';
+import { expect, test } from 'vitest';
 
 import { syncPath } from '../../cron/syncPath.js';
 import { getTempDB } from '../getDB.js';

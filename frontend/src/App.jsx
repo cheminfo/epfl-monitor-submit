@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
+
 import { EvolutionPerYearChart } from './charts/EvolutionPerYearChart.jsx';
 import { FilesStatusChart } from './charts/FilesStatusChart.jsx';
-import { Header } from './header/Header.jsx';
-import { InstrumentTable } from './data/InstrumentTable.jsx';
 import { Files } from './data/Files.jsx';
+import { InstrumentTable } from './data/InstrumentTable.jsx';
+import { Header } from './header/Header.jsx';
 
 const Body = styled.div`
   display: grid;

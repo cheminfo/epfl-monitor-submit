@@ -1,7 +1,8 @@
-import { ResponsiveBar } from '@nivo/bar';
-import { state } from '../state/state.js';
-import { getColorFromStatus } from '../data/getColorFromStatus.js';
 import { Card } from '@blueprintjs/core';
+import { ResponsiveBar } from '@nivo/bar';
+
+import { getColorFromStatus } from '../data/getColorFromStatus.js';
+import { state } from '../state/state.js';
 
 export function EvolutionPerYearChart(props) {
   const { gridArea } = props;
