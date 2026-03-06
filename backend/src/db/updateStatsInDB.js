@@ -1,18 +1,15 @@
 import { setMeta } from './setMeta.js';
+
 /**
  * Update stats and save the result in meta
- * @param {import('node:sqlite').DatabaseSync} db - the sqlite3 database
+ * @param {import('./getDB.js').DB} db - the database instance
  * @returns {object} - object containing the stats
  */
 export function updateStatsInDB(db) {
   // retrieve distinct instruments based on files.instrument
-  const instruments = db
-    .prepare('SELECT DISTINCT(instrument) AS name FROM files')
-    .all();
+  const instruments = db.selectDistinctInstruments.all();
 
-  const rawStatuses = db
-    .prepare('SELECT DISTINCT(status) AS name FROM files')
-    .all();
+  const rawStatuses = db.selectDistinctStatuses.all();
 
   for (const instrument of instruments) {
     for (const status of rawStatuses) {
@@ -48,21 +45,22 @@ export function updateStatsInDB(db) {
 }
 
 function getPerYears(db) {
-  const stmtYears = db.prepare(
-    `
-    SELECT 
+  const perYears = db
+    .statement(
+      `
+    SELECT
       COUNT(hash) as count,
-      SUM(CASE WHEN status = 'to_process' THEN 1 ELSE 0 END) as toProcess, 
-      SUM(CASE WHEN status = 'processed' THEN 1 ELSE 0 END) as processed, 
-      SUM(CASE WHEN status = 'errored' THEN 1 ELSE 0 END) as errored, 
+      SUM(CASE WHEN status = 'to_process' THEN 1 ELSE 0 END) as toProcess,
+      SUM(CASE WHEN status = 'processed' THEN 1 ELSE 0 END) as processed,
+      SUM(CASE WHEN status = 'errored' THEN 1 ELSE 0 END) as errored,
       CAST(strftime('%Y', lastModified/1000, 'unixepoch') AS INTEGER) as year,
       CAST(strftime('%s', strftime('%Y-01-01', lastModified/1000, 'unixepoch')) AS INTEGER) * 1000 as firstDayOfYearEpoch
     FROM files
     GROUP BY year
     ORDER BY lastModified ASC
     `,
-  );
-  const perYears = stmtYears.all();
+    )
+    .all();
   //need to find first year and add missing years till current year
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -88,12 +86,13 @@ function getPerYears(db) {
 }
 
 function getPerMonths(db) {
-  const stmtMonths = db.prepare(
-    `
-    SELECT 
+  const perMonths = db
+    .statement(
+      `
+    SELECT
       COUNT(hash) as count,
-      SUM(CASE WHEN status = 'to_process' THEN 1 ELSE 0 END) as toProcess, 
-      SUM(CASE WHEN status = 'processed' THEN 1 ELSE 0 END) as processed, 
+      SUM(CASE WHEN status = 'to_process' THEN 1 ELSE 0 END) as toProcess,
+      SUM(CASE WHEN status = 'processed' THEN 1 ELSE 0 END) as processed,
       SUM(CASE WHEN status = 'errored' THEN 1 ELSE 0 END) as errored,       CAST(strftime('%m', lastModified/1000, 'unixepoch') -1 AS INTEGER) as month,
       CAST(strftime('%s', strftime('%Y-%m-01', lastModified/1000, 'unixepoch')) AS INTEGER) * 1000 as firstDayOfMonthEpoch
     FROM files
@@ -101,8 +100,8 @@ function getPerMonths(db) {
     GROUP BY month
     ORDER BY lastModified ASC
     `,
-  );
-  const perMonths = stmtMonths.all();
+    )
+    .all();
   // need to add missing months
   const now = new Date();
   let month = now.getMonth();
@@ -136,10 +135,10 @@ function getOneStat(db, table, uniqueField, query) {
   const oneMonthAgo = new Date();
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
   const oneMonthAgoTimestamp = oneMonthAgo.getTime();
-  const stmt = db.prepare(
+  const stmt = db.statement(
     `SELECT COUNT(${uniqueField}) as count FROM ${table} WHERE ${query}`,
   );
-  const stmtPeriod = db.prepare(
+  const stmtPeriod = db.statement(
     `SELECT COUNT(${uniqueField}) as count FROM ${table} WHERE ${query} and lastModified >= ?`,
   );
   return {

@@ -1,12 +1,9 @@
 /**
- * save a key-value pair in the metas table
- * @param {import('node:sqlite').DatabaseSync} db - the sqlite3 database
+ * Save a key-value pair in the metas table
+ * @param {import('./getDB.js').DB} db - the database instance
  * @param {string} key - key to store
  * @param {unknown} value - value to store
  */
 export function setMeta(db, key, value) {
-  const stmt = db.prepare(
-    'INSERT OR REPLACE INTO metas (key, value) VALUES (@key, @value)',
-  );
-  stmt.run({ key, value: JSON.stringify(value) });
+  db.upsertMeta.run({ key, value: JSON.stringify(value) });
 }

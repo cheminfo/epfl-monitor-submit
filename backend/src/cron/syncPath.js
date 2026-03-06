@@ -12,7 +12,7 @@ const logger = pino({ messageKey: 'syncPath' });
 
 /**
  * Ensure that the db contains all the files in the path
- * @param {import('node:sqlite').DatabaseSync} db - the sqlite3 database
+ * @param {import('../db/getDB.js').DB} db - the database instance
  * @param {string} path - the full path to sync
  */
 export async function syncPath(db, path) {
@@ -20,8 +20,6 @@ export async function syncPath(db, path) {
   const instruments = allInstruments
     .filter((dirent) => dirent.isDirectory())
     .map((dirent) => dirent.name);
-
-  const pathInDBStmt = db.prepare('SELECT * from files WHERE relativePath = ?');
 
   for (const status of ['processed', 'errored', 'to_process']) {
     for (const instrument of instruments) {
@@ -46,7 +44,7 @@ export async function syncPath(db, path) {
           file.name,
         );
         // check if relativePath exists
-        const existing = pathInDBStmt.all(relativeName);
+        const existing = db.selectFileByRelativePath.all(relativeName);
         // if existing we just skip
         if (existing.length > 0) {
           nbFilesExisting += 1;
@@ -64,17 +62,12 @@ export async function syncPath(db, path) {
         // if current status is not to_process and the existing one is in to_process we delete it
         // apparently it was processed
         if (status !== 'to_process') {
-          db.prepare('DELETE from files WHERE hash = ? AND status = ?').run(
-            hash,
-            'to_process',
-          );
+          db.deleteFileByHashAndStatus.run(hash, 'to_process');
         }
 
         nbNewFiles += 1;
         // we don't really check if it exists or not, we just insert or update
-        db.prepare(
-          'INSERT OR REPLACE INTO files (relativePath, hash, size, lastModified, name, status, instrument) VALUES (?, ?, ?, ?, ?,?, ?)',
-        ).run(
+        db.upsertFile.run(
           relativeName,
           hash,
           fileStat.size,

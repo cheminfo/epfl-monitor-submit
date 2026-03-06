@@ -10,7 +10,7 @@ test('syncPath', async () => {
 
   await syncPath(db, path);
 
-  const allEntries = db.prepare('SELECT * FROM files').all();
+  const allEntries = db.selectAllFiles.all();
   const paths = allEntries.map((entry) => entry.relativePath);
   expect(paths).toStrictEqual([
     'ir3404/processed/a.proc.jdx',

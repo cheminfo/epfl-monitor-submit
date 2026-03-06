@@ -52,7 +52,7 @@ async function process(request, response) {
     if (!hash) {
       throw new Error('No hash provided');
     }
-    const files = db.prepare('SELECT * FROM files WHERE hash = ?').all(hash);
+    const files = db.selectFilesByHash.all(hash);
 
     if (!files) {
       throw new Error('No file found for this hash');
