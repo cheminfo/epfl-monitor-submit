@@ -5,23 +5,17 @@ import { setMeta } from './setMeta.js';
  * @returns {object} - object containing the stats
  */
 export function updateStatsInDB(db) {
-  const stats = {
-    lastUpdate: Date.now(),
-  };
-
-  stats.nbFiles = getOneStat(db, 'files', 'hash', '1=1');
-
   // retrieve distinct instruments based on files.instrument
-  stats.instruments = db
+  const instruments = db
     .prepare('SELECT DISTINCT(instrument) AS name FROM files')
     .all();
 
-  stats.statuses = db
+  const rawStatuses = db
     .prepare('SELECT DISTINCT(status) AS name FROM files')
     .all();
 
-  for (const instrument of stats.instruments) {
-    for (const status of stats.statuses) {
+  for (const instrument of instruments) {
+    for (const status of rawStatuses) {
       instrument[status.name] = {
         ...getOneStat(
           db,
@@ -33,16 +27,22 @@ export function updateStatsInDB(db) {
       };
     }
   }
-  for (let i = 0; i < stats.statuses.length; i++) {
-    const status = stats.statuses[i];
-    stats.statuses[i] = {
-      name: status.name,
-      ...getOneStat(db, 'files', 'hash', `status = '${status.name}'`),
-      query: `status:${status.name}`,
-    };
-  }
-  stats.perYears = getPerYears(db);
-  stats.perMonths = getPerMonths(db);
+
+  const statuses = rawStatuses.map((status) => ({
+    name: status.name,
+    ...getOneStat(db, 'files', 'hash', `status = '${status.name}'`),
+    query: `status:${status.name}`,
+  }));
+
+  const stats = {
+    lastUpdate: Date.now(),
+    nbFiles: getOneStat(db, 'files', 'hash', '1=1'),
+    instruments,
+    statuses,
+    perYears: getPerYears(db),
+    perMonths: getPerMonths(db),
+  };
+
   setMeta(db, 'stats', stats);
   return stats;
 }

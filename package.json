@@ -16,13 +16,13 @@
     "test-only": "NODE_OPTIONS=\"--experimental-webstorage --localstorage-file=:memory:\" vitest --run"
   },
   "devDependencies": {
-    "@preact/signals-react-transform": "^0.6.0",
+    "@preact/signals-react-transform": "^0.8.1",
     "eslint": "^9.39.1",
-    "eslint-config-zakodium": "^17.0.0",
-    "prettier": "^3.6.2",
-    "vitest": "^4.0.8"
+    "eslint-config-zakodium": "^19.1.0",
+    "prettier": "^3.8.1",
+    "vitest": "^4.0.18"
   },
   "volta": {
-    "node": "22.13.1"
+    "node": "24.14.0"
   }
 }

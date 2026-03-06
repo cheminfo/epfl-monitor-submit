@@ -142,3 +142,4 @@ storybook-static
 /playwright/.cache/
 
 sqlite
+.claude

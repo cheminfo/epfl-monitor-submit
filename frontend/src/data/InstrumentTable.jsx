@@ -18,25 +18,25 @@ export function InstrumentTable(props) {
       cell: ({ getValue }) => (
         <a
           onClick={() => {
-            return (querySignal.value = `instrument:${  getValue()}`);
+            return (querySignal.value = `instrument:${getValue()}`);
           }}
         >
           {getValue()}
         </a>
       ),
     }),
-    columnHelper.accessor(`processed.${  state.preferences.range.value}`, {
+    columnHelper.accessor(`processed.${state.preferences.range.value}`, {
       header: 'Processed',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'processed'),
     }),
-    columnHelper.accessor(`to_process.${  state.preferences.range.value}`, {
+    columnHelper.accessor(`to_process.${state.preferences.range.value}`, {
       header: 'To process',
       enableSorting: true,
       cell: ({ getValue, row }) =>
         getClickableCell(getValue, row, 'to_process'),
     }),
-    columnHelper.accessor(`errored.${  state.preferences.range.value}`, {
+    columnHelper.accessor(`errored.${state.preferences.range.value}`, {
       header: 'Errored',
       enableSorting: true,
       cell: ({ getValue, row }) => getClickableCell(getValue, row, 'errored'),
@@ -73,8 +73,7 @@ function getClickableCell(getValue, row, key) {
           getValue() > 0 ? getColorFromStatus(key) : 'transparent',
       }}
       onClick={() => {
-        return (state.view.query.value =
-          `status:${  key  } instrument:${  row.original.name}`);
+        return (state.view.query.value = `status:${key} instrument:${row.original.name}`);
       }}
     >
       {getValue()}
