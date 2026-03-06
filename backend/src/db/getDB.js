@@ -1,28 +1,25 @@
 import { existsSync, mkdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 
-import sqLite from 'better-sqlite3';
 import Postgrator from 'postgrator';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let db;
 
 /**
  * Returns a promise that resolves as an instance of the database
- * @returns {Promise<InstanceType<import('better-sqlite3')>>} - promise that resolves as an instance of the database
+ * @returns {Promise<DatabaseSync>} - promise that resolves as an instance of the database
  */
 export async function getDB() {
-  if (!db?.open) {
+  if (!db?.isOpen) {
     const path = new URL('../../../sqlite/', import.meta.url).pathname;
     if (!existsSync(path)) {
       mkdirSync(path);
     }
-    db = sqLite(join(path, 'db.sqlite'));
+    db = new DatabaseSync(join(path, 'db.sqlite'));
     // https://www.sqlite.org/wal.html
     // Activating WAL mode allows to get a speed improvement of 100x !!!
-    db.pragma('journal_mode = WAL');
+    db.exec('PRAGMA journal_mode = WAL');
     await prepareDB(db);
   }
   return db;
@@ -30,42 +27,29 @@ export async function getDB() {
 
 /**
  * Returns a Promise that resolves to a temporary instance of the database
- * @returns {Promise<InstanceType<import('better-sqlite3')>>} - promise that resolves as an instance of the temporary database
+ * @returns {Promise<DatabaseSync>} - promise that resolves as an instance of the temporary database
  */
 export async function getTempDB() {
-  const tempDB = sqLite(':memory:');
+  const tempDB = new DatabaseSync(':memory:');
   await prepareDB(tempDB);
   return tempDB;
 }
 
 /**
  * Internal function that ensures that the schema of the database is up to date
- * @param {InstanceType<import('better-sqlite3')>} db - the instance of sqlite3 database
+ * @param {DatabaseSync} db - the instance of sqlite3 database
  */
 export async function prepareDB(db) {
   const postgrator = new Postgrator({
-    migrationPattern: join(__dirname, 'migrations/*'),
+    migrationPattern: join(import.meta.dirname, 'migrations/*'),
     driver: 'sqlite3',
     execQuery: (query) => {
-      return new Promise((resolve) => {
-        const stmt = db.prepare(query);
-        try {
-          const rows = stmt.all();
-          resolve({ rows });
-        } catch (error) {
-          if (error.message.includes('This statement does not return data')) {
-            stmt.run();
-            resolve({ rows: [] });
-          }
-          throw error;
-        }
-      });
+      const stmt = db.prepare(query);
+      const rows = stmt.all();
+      return { rows };
     },
     execSqlScript: (sqlScript) => {
-      return new Promise((resolve) => {
-        db.exec(sqlScript);
-        resolve();
-      });
+      db.exec(sqlScript);
     },
   });
   await postgrator.migrate();

@@ -1,6 +1,6 @@
 /**
  * Get a record from the metas table
- * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
+ * @param {import('node:sqlite').DatabaseSync} db - the sqlite3 database
  * @param {string} key - key of the parameter
  * @returns {string|number|boolean|object|undefined} - the value of the parameter
  */

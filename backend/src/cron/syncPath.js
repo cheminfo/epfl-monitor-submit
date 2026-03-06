@@ -12,7 +12,7 @@ const logger = pino({ messageKey: 'syncPath' });
 
 /**
  * Ensure that the db contains all the files in the path
- * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
+ * @param {import('node:sqlite').DatabaseSync} db - the sqlite3 database
  * @param {string} path - the full path to sync
  */
 export async function syncPath(db, path) {

@@ -1,6 +1,6 @@
 /**
  * save a key-value pair in the metas table
- * @param {InstanceType<import('better-sqlite3')>} db - the sqlite3 database
+ * @param {import('node:sqlite').DatabaseSync} db - the sqlite3 database
  * @param {string} key - key to store
  * @param {unknown} value - value to store
  */
