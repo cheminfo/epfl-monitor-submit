@@ -17,7 +17,9 @@ const devLogger = {
     target: 'pino-pretty',
     options: {
       translateTime: 'SYS:HH:MM:ss',
-      ignore: 'pid,hostname',
+      ignore: 'pid,hostname,req,res,reqId,responseTime',
+      messageFormat: '{msg} {req.method} {req.url} {res.statusCode}',
+      singleLine: true,
     },
   },
 };

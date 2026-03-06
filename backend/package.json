@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "DEBUG=* node --env-file=.env --watch src/server.js",
-    "start": "DEBUG=* node src/server.js",
-    "devSync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node --watch src/cron/sync.js",
-    "sync": "DATA_PATH=\"$(pwd)/../data\" DEBUG=* node src/cron/sync.js"
+    "dev": "node --env-file=.env --watch src/server.js | pino-pretty",
+    "devSync": "DATA_PATH=\"$(pwd)/../data\" node --watch src/cron/sync.js | pino-pretty",
+    "start": "node src/server.js",
+    "sync": "DATA_PATH=\"$(pwd)/../data\" node src/cron/sync.js"
   },
   "dependencies": {
     "@fastify/cookie": "^11.0.2",
