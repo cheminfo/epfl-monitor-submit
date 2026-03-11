@@ -10,6 +10,9 @@ const Body = styled.div`
   display: grid;
   height: 100vh;
   overflow: hidden; /* hide the scrollbar */
+  gap: 4px;
+  padding: 4px;
+  background-color: #f5f5f5;
   grid-template-rows: 40px repeat(11, 1fr);
   grid-template-columns: repeat(12, 1fr);
   grid-template-areas:

@@ -1,16 +1,16 @@
 const colorMapping = {
   // eslint-disable-next-line camelcase
   to_process: {
-    light: 'lightyellow',
-    dark: 'yellow',
+    light: '#fff8e1',
+    dark: '#f9a825',
   },
   errored: {
-    light: 'pink',
-    dark: 'red',
+    light: '#fce4ec',
+    dark: '#e53935',
   },
   processed: {
-    light: 'lightgreen',
-    dark: 'green',
+    light: '#e8f5e9',
+    dark: '#43a047',
   },
 };
 

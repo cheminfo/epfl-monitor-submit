@@ -14,6 +14,7 @@ export function FilesTable() {
     columnHelper.accessor('lastModified', {
       header: 'Date',
       enableSorting: true,
+      size: 140,
       cell: ({ getValue }) =>
         new Date(getValue())
           .toISOString()
@@ -36,46 +37,56 @@ export function FilesTable() {
       cell: ({ getValue }) => getValue(),
     }),
     columnHelper.accessor('hash', {
-      header: 'Download',
+      header: '',
       enableSorting: false,
+      size: 40,
       cell: ({ getValue }) => (
-        <a href={`${getBackendURL()}/v1/getFile?hash=${getValue()}`} download>
+        <a
+          href={`${getBackendURL()}/v1/getFile?hash=${getValue()}`}
+          download
+          title="Download"
+          style={{ textDecoration: 'none' }}
+        >
           ⤓
         </a>
       ),
     }),
     columnHelper.accessor('moveToProcess', {
-      header: 'Move to to_process',
+      header: '',
       enableSorting: false,
-      cell: ({ getValue, row }) =>
+      size: 40,
+      cell: ({ row }) =>
         row.original.status !== 'to_process' && (
-          <a
-            href={`${getBackendURL()}/v1/moveFile?hash=${getValue()}&targetFolder=to_process`}
+          <div
+            style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+            title="Reprocess"
+            onClick={() => moveFile(row, 'to_process')}
           >
             <span
               style={{
                 color: getColorFromStatus('to_process', { light: false }),
               }}
             >
-              ⇥
+              ↻
             </span>
-          </a>
+          </div>
         ),
     }),
     columnHelper.accessor('moveToErrored', {
-      header: 'Move to errored',
+      header: '',
       enableSorting: false,
+      size: 40,
       cell: ({ row }) =>
-        // create a clickable div that use the full space of the cell and call moveFile function
         row.original.status !== 'errored' && (
           <div
             style={{ width: '100%', height: '100%', cursor: 'pointer' }}
+            title="Mark as errored"
             onClick={() => moveFile(row, 'errored')}
           >
             <span
               style={{ color: getColorFromStatus('errored', { light: false }) }}
             >
-              ⇥
+              ✕
             </span>
           </div>
         ),
@@ -91,7 +102,7 @@ export function FilesTable() {
         striped={false}
         stickyHeader
         tableProps={{
-          style: { width: '100%', tableLayout: 'fixed' },
+          style: { width: '100%' },
         }}
         renderRowTr={(trProps, row) => {
           // transparent by default

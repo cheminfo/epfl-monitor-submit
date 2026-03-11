@@ -10,7 +10,15 @@ export function FilesStatusChart(props) {
 
   return (
     <Card style={{ gridArea }}>
-      <div style={{ fontSize: '1.5em', textAlign: 'center' }}>
+      <div
+        style={{
+          fontSize: '1.1em',
+          fontWeight: 600,
+          textAlign: 'center',
+          color: '#5c7080',
+          padding: '4px 0',
+        }}
+      >
         Status of the files
       </div>
 

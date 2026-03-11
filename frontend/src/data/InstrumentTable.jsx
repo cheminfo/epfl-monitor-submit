@@ -69,6 +69,8 @@ function getClickableCell(getValue, row, key) {
         width: '100%',
         height: '100%',
         cursor: 'pointer',
+        textAlign: 'right',
+        paddingRight: '8px',
         backgroundColor:
           getValue() > 0 ? getColorFromStatus(key) : 'transparent',
       }}

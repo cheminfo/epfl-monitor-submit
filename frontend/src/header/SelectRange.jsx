@@ -24,7 +24,7 @@ const itemRenderer = (item, { handleClick, handleFocus, modifiers }) => {
 
 export function SelectRange() {
   return (
-    <div style={{ width: '200px', backgroundColor: 'red' }}>
+    <div style={{ width: '200px' }}>
       <Select
         items={items}
         itemRenderer={itemRenderer}
