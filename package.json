@@ -11,6 +11,7 @@
     "dev": "concurrently \"npm run dev -w backend\" \"npm run dev -w frontend\"",
     "eslint": "eslint --cache .",
     "eslint-fix": "node --run eslint -- --fix",
+    "predev": "lsof -ti:50107,5173 | xargs kill 2>/dev/null || true",
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",
     "test": "npm run eslint && npm run prettier && npm run test-only",
