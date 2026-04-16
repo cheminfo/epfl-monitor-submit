@@ -1,4 +1,6 @@
-# Project for monitoring cheminfo-submit.epfl.ch
+# ELN Importation Monitor
+
+Project for monitoring cheminfo-submit.epfl.ch
 
 ## Installation of docker compose project
 

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Monitor screen -->
+  <rect x="12" y="16" width="96" height="68" rx="8" fill="#1C2127" stroke="#4C90F0" stroke-width="3"/>
+
+  <!-- Screen content: activity/pulse line -->
+  <polyline points="24,58 38,58 44,38 52,70 58,46 64,58 72,58 78,34 86,62 92,50 100,50"
+    stroke="#43BF4D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Small dots on the line for data points -->
+  <circle cx="44" cy="38" r="2.5" fill="#43BF4D"/>
+  <circle cx="52" cy="70" r="2.5" fill="#43BF4D"/>
+  <circle cx="78" cy="34" r="2.5" fill="#43BF4D"/>
+
+  <!-- Monitor stand -->
+  <rect x="48" y="84" width="24" height="6" rx="2" fill="#5F6B7C"/>
+  <rect x="40" y="90" width="40" height="5" rx="2.5" fill="#5F6B7C"/>
+
+  <!-- ELN text -->
+  <text x="60" y="112" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" letter-spacing="3" fill="#4C90F0">ELN</text>
+</svg>
