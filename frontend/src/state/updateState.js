@@ -1,4 +1,4 @@
-import { isLeeve, isSignal } from './getStateInfo.js';
+import { isLeaf, isSignal } from './getStateInfo.js';
 
 /**
  * Function that will update the state with new values
@@ -15,7 +15,7 @@ export function updateState(state, stateInfo, newState) {
     if (typeof stateInfo[key] === 'object') {
       if (stateInfo[key].isSignal === isSignal) {
         state[key].value = newState[key];
-      } else if (stateInfo[key].isLeeve === isLeeve) {
+      } else if (stateInfo[key].isLeaf === isLeaf) {
         // leaves that are not signals are read-only !
         throw new Error(
           `Cannot update leaf ${key} with value ${newState[key]}`,

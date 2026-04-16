@@ -1,9 +1,33 @@
 /* eslint-disable unicorn/prefer-structured-clone */
-import { expect, test } from 'vitest';
+import { beforeEach, expect, test, vi } from 'vitest';
 
-import { getStateInfo } from '../getStateInfo.js';
-import { state } from '../state.js';
-import { updateState } from '../updateState.js';
+vi.stubGlobal('localStorage', {
+  store: {},
+  getItem: vi.fn((key) => localStorage.store[key] ?? null),
+  setItem: vi.fn((key, value) => {
+    localStorage.store[key] = value;
+  }),
+  removeItem: vi.fn((key) => {
+    delete localStorage.store[key];
+  }),
+  clear: vi.fn(() => {
+    localStorage.store = {};
+  }),
+});
+
+vi.stubGlobal(
+  'fetch',
+  vi.fn(() => Promise.resolve({ json: () => Promise.resolve({}) })),
+);
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  localStorage.store = {};
+});
+
+const { state } = await import('../state.js');
+const { getStateInfo } = await import('../getStateInfo.js');
+const { updateState } = await import('../updateState.js');
 
 test('state', () => {
   expect(JSON.parse(JSON.stringify(state))).toStrictEqual({

@@ -16,10 +16,7 @@ export function getAndManagePreferences() {
 
   // save the preferences in the localStorage
   effect(() => {
-    // need to keep JSON.parse(JSON.stringify()) to remove signals
-    // eslint-disable-next-line unicorn/prefer-structured-clone
-    const stateCopy = JSON.parse(JSON.stringify(state));
-    const stringifiedState = JSON.stringify(stateCopy);
+    const stringifiedState = JSON.stringify(state);
     if (localStorage.getItem('preferences') === stringifiedState) {
       return;
     }

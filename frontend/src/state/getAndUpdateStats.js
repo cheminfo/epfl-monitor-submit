@@ -7,9 +7,12 @@ export function getAndUpdateStats() {
 
   function fetchStats() {
     fetch(`${getBackendURL()}/v1/stats`)
-      .then((res) => res.json())
+      .then((response) => response.json())
       .then((data) => {
         stats.value = data;
+      })
+      .catch((error) => {
+        console.error('Failed to fetch stats:', error);
       });
   }
   fetchStats();
