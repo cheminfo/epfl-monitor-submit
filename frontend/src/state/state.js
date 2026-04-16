@@ -11,6 +11,10 @@ export const state = {
   view: {
     query: signal(''),
     files: signal([]),
+    statusFilter: signal(null),
+    offset: signal(0),
+    totalCount: signal(0),
+    statusCounts: signal({}),
   },
   preferences: getAndManagePreferences(),
 };

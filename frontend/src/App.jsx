@@ -36,7 +36,13 @@ function App() {
 
   const handleNavigateToFiles = useCallback((query) => {
     if (query !== undefined) {
-      state.view.query.value = query;
+      // Extract status filter from query and set it separately
+      const statusMatch = query.match(/\bstatus:(\S+)/);
+      const statusFilter = statusMatch ? statusMatch[1] : null;
+      const remainingQuery = query.replace(/\bstatus:\S+/g, '').trim();
+      state.view.statusFilter.value = statusFilter;
+      state.view.query.value = remainingQuery;
+      state.view.offset.value = 0;
     }
     setSelectedTab('files');
   }, []);

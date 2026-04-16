@@ -34,7 +34,32 @@ export function FilesTable() {
     columnHelper.accessor('status', {
       header: 'Status',
       enableSorting: true,
-      cell: ({ getValue }) => getValue(),
+      cell: ({ getValue }) => {
+        const status = getValue();
+        const color = getColorFromStatus(status, { light: false });
+        return (
+          <span
+            style={{
+              color,
+              fontWeight: 600,
+              cursor: 'pointer',
+              padding: '2px 6px',
+              borderRadius: 3,
+              backgroundColor: getColorFromStatus(status),
+            }}
+            title={`Filter by ${status}`}
+            onClick={(event) => {
+              event.stopPropagation();
+              const current = state.view.statusFilter.value;
+              state.view.statusFilter.value =
+                current === status ? null : status;
+              state.view.offset.value = 0;
+            }}
+          >
+            {status}
+          </span>
+        );
+      },
     }),
     columnHelper.accessor('hash', {
       header: '',

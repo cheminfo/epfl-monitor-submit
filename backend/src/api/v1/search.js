@@ -1,8 +1,8 @@
 import { getDB } from '../../db/getDB.js';
-import { queryFiles } from '../../db/queryFiles.js';
+import { queryFilesPage } from '../../db/queryFiles.js';
 
 /**
- * Search files based on a query string
+ * Search files based on a query string with pagination
  * @param {import('fastify').FastifyInstance} fastify - fastify instance
  */
 export default function search(fastify) {
@@ -20,6 +20,16 @@ export default function search(fastify) {
             type: 'string',
             description: 'Search query string',
           },
+          limit: {
+            type: 'integer',
+            description: 'Number of results per page',
+            default: 50,
+          },
+          offset: {
+            type: 'integer',
+            description: 'Offset for pagination',
+            default: 0,
+          },
         },
       },
     },
@@ -36,12 +46,20 @@ async function process(request, response) {
   const params = request.body || request.query || {};
   const db = await getDB();
   try {
-    const result = await queryFiles(params.query || '', db, {
-      logger: request.log,
-    });
+    const { entries, totalCount, statusCounts } = await queryFilesPage(
+      params.query || '',
+      db,
+      {
+        limit: Number(params.limit) || 50,
+        offset: Number(params.offset) || 0,
+        logger: request.log,
+      },
+    );
     return await response.send({
       status: 'ok',
-      result,
+      result: entries,
+      totalCount,
+      statusCounts,
     });
   } catch (error) {
     request.log.error(error);

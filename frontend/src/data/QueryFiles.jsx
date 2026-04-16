@@ -1,23 +1,35 @@
 import { InputGroup } from '@blueprintjs/core';
 import { effect } from '@preact/signals-react';
 
+import { PAGE_SIZE } from '../components/Pagination.jsx';
 import { state } from '../state/state.js';
 import { getBackendURL } from '../utils/getBackendURL.js';
 
 effect(() => {
-  // define url parameters
   const params = new URLSearchParams();
   const range = state.preferences.range.value;
   const lastModified = getLastModified(range);
-  params.append(
-    'query',
-    state.view.query.value +
-      (lastModified ? ` lastModified:>${lastModified}` : ''),
-  );
+  const statusFilter = state.view.statusFilter.value;
+  const offset = state.view.offset.value;
+
+  let query = state.view.query.value;
+  if (statusFilter) {
+    query += ` status:${statusFilter}`;
+  }
+  if (lastModified) {
+    query += ` lastModified:>${lastModified}`;
+  }
+
+  params.append('query', query);
+  params.append('limit', String(PAGE_SIZE));
+  params.append('offset', String(offset));
+
   fetch(`${getBackendURL()}/v1/search?${params.toString()}`)
-    .then((res) => res.json())
+    .then((response) => response.json())
     .then((data) => {
       state.view.files.value = data;
+      state.view.totalCount.value = data.totalCount || 0;
+      state.view.statusCounts.value = data.statusCounts || {};
     })
     .catch((error) => {
       console.error('Failed to fetch files:', error);
@@ -53,7 +65,10 @@ export function QueryFiles() {
         type="search"
         leftIcon="search"
         value={querySignal.value}
-        onValueChange={(value) => (querySignal.value = value)}
+        onValueChange={(value) => {
+          querySignal.value = value;
+          state.view.offset.value = 0;
+        }}
       />
     </div>
   );
