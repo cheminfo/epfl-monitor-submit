@@ -18,16 +18,26 @@ effect(() => {
     .then((res) => res.json())
     .then((data) => {
       state.view.files.value = data;
+    })
+    .catch((error) => {
+      console.error('Failed to fetch files:', error);
     });
 });
 
 function getLastModified(range) {
+  const now = new Date();
   switch (range) {
+    case 'lastWeek':
+      return now.setDate(now.getDate() - 7);
     case 'lastMonth':
-      return new Date().setMonth(new Date().getMonth() - 1);
+      return now.setMonth(now.getMonth() - 1);
+    case 'last3Months':
+      return now.setMonth(now.getMonth() - 3);
+    case 'last6Months':
+      return now.setMonth(now.getMonth() - 6);
     case 'last12Months':
-      return new Date().setFullYear(new Date().getFullYear() - 1);
-    case 'all':
+      return now.setFullYear(now.getFullYear() - 1);
+    case 'total':
       return undefined;
     default:
       return undefined;

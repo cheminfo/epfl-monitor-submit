@@ -128,13 +128,23 @@ function getPerMonths(db) {
 }
 
 function getOneStat(db, table, uniqueField, query) {
-  const twelveMonthsAgo = new Date();
-  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-  const twelveMonthsAgoTimestamp = twelveMonthsAgo.getTime();
+  const now = new Date();
 
-  const oneMonthAgo = new Date();
+  const oneWeekAgo = new Date(now);
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  const oneMonthAgo = new Date(now);
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-  const oneMonthAgoTimestamp = oneMonthAgo.getTime();
+
+  const threeMonthsAgo = new Date(now);
+  threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+
+  const sixMonthsAgo = new Date(now);
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+  const twelveMonthsAgo = new Date(now);
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
   const stmt = db.statement(
     `SELECT COUNT(${uniqueField}) as count FROM ${table} WHERE ${query}`,
   );
@@ -143,7 +153,10 @@ function getOneStat(db, table, uniqueField, query) {
   );
   return {
     total: stmt.get().count,
-    last12Months: stmtPeriod.get(twelveMonthsAgoTimestamp).count,
-    lastMonth: stmtPeriod.get(oneMonthAgoTimestamp).count,
+    last12Months: stmtPeriod.get(twelveMonthsAgo.getTime()).count,
+    last6Months: stmtPeriod.get(sixMonthsAgo.getTime()).count,
+    last3Months: stmtPeriod.get(threeMonthsAgo.getTime()).count,
+    lastMonth: stmtPeriod.get(oneMonthAgo.getTime()).count,
+    lastWeek: stmtPeriod.get(oneWeekAgo.getTime()).count,
   };
 }
