@@ -1,46 +1,80 @@
-import styled from '@emotion/styled';
+import { Navbar, Tab, Tabs } from '@blueprintjs/core';
+import { useCallback, useEffect, useState } from 'react';
 
-import { EvolutionPerYearChart } from './charts/EvolutionPerYearChart.jsx';
-import { FilesStatusChart } from './charts/FilesStatusChart.jsx';
-import { Files } from './data/Files.jsx';
-import { InstrumentTable } from './data/InstrumentTable.jsx';
-import { Header } from './header/Header.jsx';
+import logoUrl from '/logo.svg?url';
 
-const Body = styled.div`
-  display: grid;
-  height: 100vh;
-  overflow: hidden; /* hide the scrollbar */
-  gap: 4px;
-  padding: 4px;
-  background-color: #f5f5f5;
-  grid-template-rows: 40px repeat(11, 1fr);
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-areas:
-    'hd hd hd hd hd hd hd hd hd hd hd hd' /* hd: header */
-    'in in in in in in fi fi fi fi fi fi' /* in: instrument / fi: files */
-    'in in in in in in fi fi fi fi fi fi'
-    'in in in in in in fi fi fi fi fi fi'
-    'in in in in in in fi fi fi fi fi fi'
-    'in in in in in in fi fi fi fi fi fi'
-    'in in in in in in fi fi fi fi fi fi'
-    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2' /* c1: status of files / c2: evolution over years */
-    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
-    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
-    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2'
-    'c1 c1 c1 c1 c1 c1 c2 c2 c2 c2 c2 c2';
-`;
+import { DashboardPanel } from './components/DashboardPanel.jsx';
+import { FilesPanel } from './components/FilesPanel.jsx';
+import { SelectRange } from './header/SelectRange.jsx';
+import { state } from './state/state.js';
+
+const TABS = new Set(['dashboard', 'files']);
+
+function isValidTab(value) {
+  return TABS.has(value);
+}
+
+function getTabFromHash() {
+  const hash = globalThis.location.hash.replace('#', '');
+  return isValidTab(hash) ? hash : 'dashboard';
+}
 
 function App() {
-  // the first time I need to load the stats from the backend
+  const [selectedTab, setSelectedTab] = useState(getTabFromHash);
+
+  useEffect(() => {
+    globalThis.location.hash = selectedTab;
+  }, [selectedTab]);
+
+  useEffect(() => {
+    function onHashChange() {
+      setSelectedTab(getTabFromHash());
+    }
+    globalThis.addEventListener('hashchange', onHashChange);
+    return () => globalThis.removeEventListener('hashchange', onHashChange);
+  }, []);
+
+  const handleNavigateToFiles = useCallback((query) => {
+    if (query !== undefined) {
+      state.view.query.value = query;
+    }
+    setSelectedTab('files');
+  }, []);
 
   return (
-    <Body>
-      <Header gridArea="hd" />
-      <InstrumentTable gridArea="in" />
-      <Files gridArea="fi" />
-      <FilesStatusChart gridArea="c1" />
-      <EvolutionPerYearChart gridArea="c2" />
-    </Body>
+    <>
+      <Navbar>
+        <Navbar.Group>
+          <Navbar.Heading
+            style={{ display: 'flex', alignItems: 'center', gap: 8 }}
+          >
+            <img src={logoUrl} alt="ELN Importation Monitor" height={28} />
+            <span style={{ fontWeight: 700, letterSpacing: -0.3 }}>
+              ELN Importation Monitor
+            </span>
+          </Navbar.Heading>
+          <Navbar.Divider />
+          <Tabs
+            selectedTabId={selectedTab}
+            onChange={(tabId) => setSelectedTab(tabId)}
+            size="large"
+          >
+            <Tab id="dashboard" title="Dashboard" />
+            <Tab id="files" title="Files" />
+          </Tabs>
+        </Navbar.Group>
+        <Navbar.Group align="right">
+          <SelectRange />
+        </Navbar.Group>
+      </Navbar>
+
+      <div style={{ flex: 1, overflow: 'auto' }}>
+        {selectedTab === 'dashboard' && (
+          <DashboardPanel onNavigateToFiles={handleNavigateToFiles} />
+        )}
+        {selectedTab === 'files' && <FilesPanel />}
+      </div>
+    </>
   );
 }
 
