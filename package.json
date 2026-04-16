@@ -14,7 +14,7 @@
     "predev": "lsof -ti:50107,5173 | xargs kill 2>/dev/null || true",
     "prettier": "prettier --check .",
     "prettier-write": "prettier --write .",
-    "test": "npm run eslint && npm run prettier && npm run test-only",
+    "test": "npm run test-only && npm run eslint && npm run prettier",
     "test-only": "NODE_OPTIONS=\"--experimental-webstorage --localstorage-file=:memory:\" vitest --run"
   },
   "devDependencies": {
@@ -22,8 +22,8 @@
     "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-config-zakodium": "^19.1.0",
-    "prettier": "^3.8.1",
-    "vitest": "^4.0.18"
+    "prettier": "^3.8.3",
+    "vitest": "^4.1.4"
   },
   "volta": {
     "node": "24.14.0"

@@ -2,7 +2,7 @@
 import { expect, test } from 'vitest';
 
 import { getStateInfo } from '../getStateInfo.js';
-import { state } from '../state';
+import { state } from '../state.js';
 import { updateState } from '../updateState.js';
 
 test('state', () => {
