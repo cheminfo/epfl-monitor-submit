@@ -1,4 +1,5 @@
 import { HTMLTable } from '@blueprintjs/core';
+import { useState } from 'react';
 
 import { EvolutionPerYearChart } from '../charts/EvolutionPerYearChart.jsx';
 import { FilesStatusChart } from '../charts/FilesStatusChart.jsx';
@@ -26,6 +27,40 @@ export function DashboardPanel(props) {
   const instruments = stats?.instruments || [];
 
   const total = statuses.reduce((sum, status) => sum + (status[range] || 0), 0);
+
+  const [instrumentSort, setInstrumentSort] = useState({
+    key: 'name',
+    direction: 'asc',
+  });
+
+  const sortedInstruments = instruments.toSorted((a, b) => {
+    const { key, direction } = instrumentSort;
+    const multiplier = direction === 'asc' ? 1 : -1;
+    if (key === 'name') {
+      return multiplier * a.name.localeCompare(b.name);
+    }
+    if (key === 'total') {
+      const totalA = STATUS_ORDER.reduce(
+        (sum, k) => sum + (a[k]?.[range] || 0),
+        0,
+      );
+      const totalB = STATUS_ORDER.reduce(
+        (sum, k) => sum + (b[k]?.[range] || 0),
+        0,
+      );
+      return multiplier * (totalA - totalB);
+    }
+    // Sort by status column
+    return multiplier * ((a[key]?.[range] || 0) - (b[key]?.[range] || 0));
+  });
+
+  function handleInstrumentSort(key) {
+    setInstrumentSort((previous) =>
+      previous.key === key
+        ? { key, direction: previous.direction === 'asc' ? 'desc' : 'asc' }
+        : { key, direction: key === 'name' ? 'asc' : 'desc' },
+    );
+  }
 
   return (
     <div style={{ padding: '24px 28px', maxWidth: 1200, margin: '0 auto' }}>
@@ -66,32 +101,36 @@ export function DashboardPanel(props) {
           <HTMLTable style={{ width: '100%' }}>
             <thead>
               <tr>
-                <th style={thStyle}>Name</th>
+                <SortableHeader
+                  label="Name"
+                  sortKey="name"
+                  currentSort={instrumentSort}
+                  onClick={handleInstrumentSort}
+                />
                 {STATUS_ORDER.map((statusKey) => (
-                  <th
+                  <SortableHeader
                     key={statusKey}
-                    style={{ ...thStyle, textAlign: 'center' }}
-                  >
-                    <span
-                      style={{
-                        display: 'inline-block',
-                        width: 8,
-                        height: 8,
-                        borderRadius: '50%',
-                        background: getColorFromStatus(statusKey, {
-                          light: false,
-                        }),
-                        marginRight: 6,
-                      }}
-                    />
-                    {STATUS_LABELS[statusKey]}
-                  </th>
+                    label={STATUS_LABELS[statusKey]}
+                    sortKey={statusKey}
+                    currentSort={instrumentSort}
+                    onClick={handleInstrumentSort}
+                    center
+                    statusColor={getColorFromStatus(statusKey, {
+                      light: false,
+                    })}
+                  />
                 ))}
-                <th style={{ ...thStyle, textAlign: 'center' }}>Total</th>
+                <SortableHeader
+                  label="Total"
+                  sortKey="total"
+                  currentSort={instrumentSort}
+                  onClick={handleInstrumentSort}
+                  center
+                />
               </tr>
             </thead>
             <tbody>
-              {instruments.map((instrument) => {
+              {sortedInstruments.map((instrument) => {
                 const instrumentTotal = STATUS_ORDER.reduce(
                   (sum, key) => sum + (instrument[key]?.[range] || 0),
                   0,
@@ -240,6 +279,38 @@ function CellValue(props) {
     >
       {value}
     </span>
+  );
+}
+
+function SortableHeader(props) {
+  const { label, sortKey, currentSort, onClick, center, statusColor } = props;
+  const isActive = currentSort.key === sortKey;
+  const arrow = isActive ? (currentSort.direction === 'asc' ? ' ▲' : ' ▼') : '';
+  return (
+    <th
+      style={{
+        ...thStyle,
+        textAlign: center ? 'center' : undefined,
+        cursor: 'pointer',
+        userSelect: 'none',
+      }}
+      onClick={() => onClick(sortKey)}
+    >
+      {statusColor && (
+        <span
+          style={{
+            display: 'inline-block',
+            width: 8,
+            height: 8,
+            borderRadius: '50%',
+            background: statusColor,
+            marginRight: 6,
+          }}
+        />
+      )}
+      {label}
+      <span style={{ color: isActive ? '#1e293b' : '#cbd5e1' }}>{arrow}</span>
+    </th>
   );
 }
 
