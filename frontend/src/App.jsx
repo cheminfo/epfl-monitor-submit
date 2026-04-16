@@ -1,7 +1,7 @@
 import { Navbar, Tab, Tabs } from '@blueprintjs/core';
 import { useCallback, useEffect, useState } from 'react';
 
-import logoUrl from '/logo.svg?url';
+const logoUrl = import.meta.env.BASE_URL + 'logo.svg';
 
 import { DashboardPanel } from './components/DashboardPanel.jsx';
 import { FilesPanel } from './components/FilesPanel.jsx';
