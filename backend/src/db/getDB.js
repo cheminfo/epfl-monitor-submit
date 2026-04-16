@@ -11,7 +11,10 @@ const logger = pino({ name: 'getDB' });
 const SLOW_QUERY_THRESHOLD_MS = 100;
 
 /** Path to the slow query log file, alongside the SQLite database. */
-const slowQueryLogPath = new URL('../../../sqlite/slow-queries.log', import.meta.url).pathname;
+const slowQueryLogPath = new URL(
+  '../../../sqlite/slow-queries.log',
+  import.meta.url,
+).pathname;
 
 /**
  * Append a slow query entry to the log file.

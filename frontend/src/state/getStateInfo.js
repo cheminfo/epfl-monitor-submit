@@ -37,5 +37,7 @@ export function getStateInfo(state, stateInfo = {}) {
 }
 
 export function isSignalCheck(value) {
-  return value != null && typeof value === 'object' && value.brand === preactSymbol;
+  return (
+    value != null && typeof value === 'object' && value.brand === preactSymbol
+  );
 }
