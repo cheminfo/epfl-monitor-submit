@@ -1,8 +1,33 @@
-import { existsSync, mkdirSync } from 'node:fs';
+import { appendFileSync, existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 
+import pino from 'pino';
 import Postgrator from 'postgrator';
+
+const logger = pino({ name: 'getDB' });
+
+/** Log a warning for queries taking longer than this (in milliseconds). */
+const SLOW_QUERY_THRESHOLD_MS = 100;
+
+/** Path to the slow query log file, alongside the SQLite database. */
+const slowQueryLogPath = new URL('../../../sqlite/slow-queries.log', import.meta.url).pathname;
+
+/**
+ * Append a slow query entry to the log file.
+ * @param {{ sql: string, duration: number, rowCount?: number }} entry
+ */
+function logSlowQuery(entry) {
+  const line = JSON.stringify({
+    timestamp: new Date().toISOString(),
+    ...entry,
+  });
+  try {
+    appendFileSync(slowQueryLogPath, `${line}\n`);
+  } catch {
+    // Ignore write errors to avoid crashing the server
+  }
+}
 
 let instance;
 let initPromise;
@@ -85,13 +110,52 @@ export class DB {
 
   /**
    * Returns a cached prepared statement, creating it on first access.
+   * Execution methods are wrapped to log slow queries.
    * @param {string} sql - SQL to prepare and cache
-   * @returns {import('node:sqlite').StatementSync} - cached prepared statement
+   * @returns {{ get: Function, all: Function, run: Function }} - cached prepared statement wrapper
    */
   statement(sql) {
     let cached = this.#statements[sql];
     if (!cached) {
-      cached = this.db.prepare(sql);
+      const statement = this.db.prepare(sql);
+      cached = {
+        get(...args) {
+          const start = performance.now();
+          const row = statement.get(...args);
+          const duration = performance.now() - start;
+          if (duration > SLOW_QUERY_THRESHOLD_MS) {
+            const rounded = Math.round(duration);
+            logger.warn({ sql, duration: rounded }, 'Slow query');
+            logSlowQuery({ sql, duration: rounded });
+          }
+          return row;
+        },
+        all(...args) {
+          const start = performance.now();
+          const rows = statement.all(...args);
+          const duration = performance.now() - start;
+          if (duration > SLOW_QUERY_THRESHOLD_MS) {
+            const rounded = Math.round(duration);
+            logger.warn(
+              { sql, duration: rounded, rowCount: rows.length },
+              'Slow query',
+            );
+            logSlowQuery({ sql, duration: rounded, rowCount: rows.length });
+          }
+          return rows;
+        },
+        run(...args) {
+          const start = performance.now();
+          const result = statement.run(...args);
+          const duration = performance.now() - start;
+          if (duration > SLOW_QUERY_THRESHOLD_MS) {
+            const rounded = Math.round(duration);
+            logger.warn({ sql, duration: rounded }, 'Slow query');
+            logSlowQuery({ sql, duration: rounded });
+          }
+          return result;
+        },
+      };
       this.#statements[sql] = cached;
     }
     return cached;
